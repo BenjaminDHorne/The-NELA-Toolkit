@@ -1,3 +1,4 @@
 flask
 flask_sqlalchemy
 ast
+psycopg2
