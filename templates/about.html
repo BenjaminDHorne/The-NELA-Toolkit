@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+	<title>NewsVisualizer</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	</head>
+</html>
+
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top"> 
+	<a class="navbar-brand" href="#"> NewsVisualizer </a>
+	<ul class="nav navbar-nav navbar-right">
+		<li> 
+			<a href="/"> Main </a>
+		</li>
+		<li>
+			<a style="padding-right:50px" href="#"> Help </a>
+		</li>
+	</ul>
+</nav>
+
+<div class="row">
+	<div class="col-sm-8">
+		<div style="margin-top:100px; margin-left:50px; border-bottom: 1px solid #e6e6e6;">
+			<h1> About NewsVisualizer </h1>
+		</div>
+		<div style="margin-left:85px; margin-top: 20px">
+			<h3><strong> What is NewsVisualizer? </strong></h3>
+			<p style="margin-left:5px; font-size:15px"> 
+				NewsVisualizer is a news source comparison tool. Its purpose is to provide an objective, multi-dimensional viewpoint of the sources present, allowing you, as the user, to make your own judgement on the reliability of each source. NewsVisualizer makes use of a large dataset of articles, which was collected each day over a six month-long continuous time span. The main idea behind the tool's visualization is that each news source can be represented by the collection of its published articles. NewsVisualizer aims to provide a true representation of each source, doing so by displaying the minimum, maximum, average and full range of values for any of the given article features. NewsVisualizer uses a large set of article features with the intention of providing a complete viewpoint to analyze the reliability of a source.
+			</p>
+			<h3><strong> What are the features used? </strong></h3>
+			<p style="margin-left:5px; font-size:15px"> 
+				NewsVisualizer uses a set of article features, which are generally based on the word counts within the articles. Specifically, NewsVisualizer makes use of many of the features provided by <a href="https://liwc.wpengine.com/"> Linguistic Inquiry and Word Count (LIWC)</a>. For example, the feature 'Perception Words' is an average number of discrepancy words that the article uses; these words include "should", "would, "could", etc. The full list of features and a detailed description of each can be found <a href="#"> here </a>. 
+			</p>
+			<h3><strong> How can I add more sources? </strong></h3>
+			<p style="margin-left:5px; font-size:15px"> 
+				The <a href="#"> NewsVisualizer github </a> provides all the code used in creating this tool. Given your own crawler or article collection, you can compute the features for each article and add it to the tool's database.
+			</p>
+			<h3><strong> Where can I see related work? </strong></h3>
+			<p style="margin-left:5px; font-size:15px"> 
+				The NewsVisualizer is a subset of the "fake news" work done at RPI's research team led by Sibel Adali. Below are a few related papers from our team on this subject:
+				<br></br>
+				<a href="http://homepages.rpi.edu/~horneb/Horne_fakenews_NECO2017.pdf"> This Just In: Fake News Packs a Lot in Title, Uses Simpler, Repetitive Content in Text Body, More Similar to Satire than Real News </a>
+			</p>
+		</div>
+	</div>
+
+	<div class="col-sm-4">
+		<div style = "margin-top: 100px">
+			<img style="height:200px; margin-left:175px" src="/static/rpi.png">
+		</div>
+	</div>
+</div>
+
+
+</body>

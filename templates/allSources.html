@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<title>NewsVisualizer</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename = 'js/data.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename = 'js/sourceData.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename = 'js/allSources.js') }}"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'index.css') }}"></script>
+	</head>
+</html>
+
+<nav class="navbar navbar-inverse navbar-fixed-top"> 
+	<a class="navbar-brand" href="#"> NewsVisualizer </a>
+	<ul class="nav navbar-nav navbar-right">
+		<li> 
+			<a href="/"> Main </a>
+		</li>
+		<li>
+			<a style="padding-right:50px" href="#"> Help </a>
+		</li>
+	</ul>
+</nav>
+
+<div class="row" style="display:inline-flex;  margin-top: 80px">
+	<div style="width:1350px; display: flex; margin-left:215px">
+		<div style="width:400px; float; margin-right:75px;"> 
+			<table class="table table-hover" id="allSources0">
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+		<div style="width:400px; float: right;margin-right:75px"> 
+			<table class="table table-hover" id="allSources1">
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+		<div style="width:400px; float: right;"> 
+			<table class="table table-hover" id="allSources2">
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+

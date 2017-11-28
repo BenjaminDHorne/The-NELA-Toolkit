@@ -1,0 +1,144 @@
+<html>
+	<head>
+		<title>NewsVisualizer</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename = 'js/source.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename = 'js/sourceData.js') }}"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'index.css') }}"></script>
+	</head>
+</html>
+
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top"> 
+	<a class="navbar-brand" href="#"> NewsVisualizer </a>
+	<ul class="nav navbar-nav navbar-right">
+		<li> 
+			<a href="/"> Main </a>
+		</li>
+		<li>
+			<a style="padding-right:50px" href="#"> Help </a>
+		</li>
+	</ul>
+</nav>
+
+<div class="row" style="display:inline-flex;">
+	<div style="width:400px; float: left;"> 
+ 		<div class="panel panel-default" style="margin-top: 80px; margin-left: 45px; padding-bottom:5px"> 
+ 			<div class="panel-heading"> </div>
+ 			<div class = "panel-body"> 
+ 				<div class = "image-panel" style="justify-content: center; display: flex">
+ 					<img id="sourceImage" style="height:200px;">
+ 				</div>
+ 				<hr/>
+ 				<div class="form-inline" style="display:flex">
+ 					<label> Type: </label>
+ 					<p id="typeLabel" style="padding-left: 38px"></p>
+ 				</div>
+ 				<div class="form-inline" style="display:flex">
+ 					<label> Country: </label>
+ 					<p id="countryLabel" style="padding-left: 15px"></p>
+ 				</div>
+ 				<div class="form-inline" style="display:flex">
+ 					<label> Founded: </label>
+ 					<p id="foundedLabel" style="padding-left: 10px"></p>
+ 				</div>
+ 				<div class="form-inline" style="display:flex">
+ 					<label> Website: </label>
+ 					<a id="websiteLabel" style="padding-left: 16px"> </a> 
+ 				</div>
+ 			</div>
+ 		</div>
+ 		<div class="panel panel-default" style="margin-top: 25px; margin-left: 45px">
+	 		<div class = "panel-body"> 
+	 			<center> <strong style="font-size: large"> Top Phrases <strong> </center> 
+	 			<hr/>
+	 			<select class="form-control" id="monthPhraseSelector" style="text-align-last: center; padding-right: 29px; direction: ltr; margin-bottom:10px" onchange="updateTopPhrases(this);">
+	 				<option selected="selected" value=4> April </option>
+	 				<option value=5> May </option>
+	 				<option value=6> June </option>
+	 				<option value=7> July </option>
+	 				<option value=8> August </option>
+	 				<option value=9> September </option>
+	 				<option value=10> October </option>
+	 			</select>
+		 		<div id="topPhrases">
+		 			<!-- <div class="phrase">
+					  <center> Phrase 1  <center>
+					</div>
+					<div class="phrase">
+					  <center> Phrase 2 <center>
+					</div>
+					<div class="phrase">
+					  <center> Phrase 3 <center>
+					</div>
+					<div class="phrase">
+					  <center> Phrase 4 <center>
+					</div>
+					<div class="phrase">
+					  <center> Phrase 5 <center>
+					</div> -->
+				</div>
+	 		</div>
+ 		</div> 
+
+ 	</div>
+
+ 	<div style="width: 1300px; float: right; margin-top: 60px;">
+ 		<div style="width:825px; float: left; padding-left: 50px; padding-top:0.5px">
+	 		<h1 id="sourceName"> </h1>
+	 		<hr/>
+	 		<div id="articleCountChart" style="width: 825px; height: 300px"> </div>
+	 		<div id="facebookEngagementChart" style="width: 825px; height: 300px"></div>
+	 	</div>
+	 	<div style="width:475px; float: left; margin-top: 30px; padding-left:50px">
+	 		<table class="table table-hover" id="featuredArticles">
+	 			<thead>
+	 				<tr>
+	 					<th> </th>
+	 					<th> <img style="width:50px" src="/static/shareIcon.png"> </th>
+	 				</tr>
+	 			</thead>
+	 			<tbody>
+<!-- 	 			<tr>
+	 					<td> <a href="#"> Sample Article </a> </td>
+	 				</tr>
+	 				<tr>
+	 					<td> <a href="#"> Sample Article </a> </td>
+	 				</tr>
+	 				<tr>
+	 					<td> <a href="#"> Sample Article </a> </td>
+	 				</tr>
+	 				<tr>
+	 					<td> <a href="#"> Sample Article </a> </td>
+	 				</tr>
+	 				<tr>
+	 					<td> <a href="#"> Sample Article </a> </td>
+	 				</tr>
+	 				<tr>
+	 					<td> <a href="#"> Sample Article </a> </td>
+	 				</tr>
+	 				<tr>
+	 					<td> <a href="#"> Sample Article </a> </td>
+	 				</tr>
+	 				<tr>
+	 					<td> <a href="#"> Sample Article </a> </td>
+	 				</tr>
+	 				<tr>
+	 					<td> <a href="#"> Sample Article </a> </td>
+	 				</tr>
+	 				<tr>
+	 					<td> <a href="#"> Sample Article </a> </td>
+	 				</tr> -->
+	 			</tbody>
+	 		</table>
+	 	</div>
+ 	</div>
+</div>	
+
+</body>

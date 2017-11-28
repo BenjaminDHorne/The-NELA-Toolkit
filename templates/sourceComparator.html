@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<title>NewsVisualizer</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename = 'js/main.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename = 'js/data.js') }}"></script>
+		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+		<script type="text/javascript">
+	    	google.charts.load('current', {'packages':['corechart']});
+	      	google.charts.setOnLoadCallback(drawBubbleChart);
+	    </script>
+	    <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+	    <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'index.css') }}"></script>
+		<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+	</head>
+</html>
+
+<body>
+
+<nav class="navbar navbar-inverse navbar-fixed-top"> 
+	<a class="navbar-brand" href="#"> NewsVisualizer </a>
+	<ul class="nav navbar-nav navbar-right">
+		<li> 
+			<a href="/"> Main </a>
+		</li>
+		<li>
+			<a style="padding-right:50px" href="#"> Help </a>
+		</li>
+	</ul>
+</nav>
+
+ 
+ <div class="row" style="display:inline-flex;">
+ 	<div style="width:400px; float: left;"> 
+ 		<div class="panel panel-default" style="margin-top: 80px; margin-left: 45px"> 
+ 			<div class="panel-heading" style="font-weight:bold; font-size:larger"> <center> Chart Settings </center> </div>
+ 			<div class = "panel-body"> 
+ 				<div class="form">
+ 					<label class="checkbox-inline" style="padding-bottom:20px">
+				    	<input type="checkbox" value="" style="padding-left:10px;" id="featureCheckbox"> Show All Options
+				    </label>
+				    <br/>
+				</div>
+				<div class="form">
+ 					<label>Source Value:</label>
+	 				<div class="form-group" style="padding-left:5px">
+						<select class="form-control" id="sourceValueSelector" style="width:150px">
+							<option selected="selected">Average</option>
+							<option>Median</option>
+							<option>Maximum</option>
+	 					</select>
+	 				</div>
+	 			</div>
+ 				<div class="form">
+ 					<label>X-axis:</label>
+	 				<div class="form-group" style="padding-left:5px">
+						<select class="form-control" id="xAxisSelector">
+	 					</select>
+	 				</div>
+	 			</div>
+	 			 <div class="form">
+ 					<label>Y-axis:</label>
+	 				<div class="form-group" style="padding-left:5px">
+						<select class="form-control" id="yAxisSelector">
+	 					</select>
+	 				</div>
+	 			</div>
+	 			<div class="form">
+ 					<label>Bubble Color:</label>
+	 				<div class="form-group" style="padding-left:5px">
+						<select class="form-control" id="bubbleColorSelector">
+	 					</select>
+	 				</div>
+	 			</div>
+	 			<div class="form">
+ 					<label>Bubble Size:</label>
+	 				<div class="form-group" style="padding-left:5px">
+						<select class="form-control" id="bubbleSizeSelector">
+	 					</select>
+	 				</div>
+	 			</div>
+	 			<div class = "form">
+	 				<label style="padding-right:20px"> Sources: </label>
+	 				<div id="sourceSelectContainer" style="padding-left:5px">
+		 				<select id="sourceSelector" class="selectpicker dropdown" multiple data-actions-box="true" data-live-search="true" onChange="sourceSelectClicked()">
+						</select>
+					</div>
+	 			</div>
+	 			<div style="padding-top:15px">
+	 				<label style="padding-right:20px">Date Range:</label>
+	 				<div style="margin-left:5px">
+	 					<input type="text" name="daterange" style="padding:5px"/>
+	 				</div>
+	 			</div>
+	 			<div id="buttonDiv" style="display: flex;align-items: center;justify-content: center">
+		 			<button type="button" class="btn btn-success" id="submitButton" onclick=submitData() style= "display:block; margin-left:auto; margin-right:auto; margin-top: 25px">Submit</button>
+ 				</div>
+ 			</div>
+ 		</div>
+ 		<div class="panel panel-default" style="margin-top: 15px; margin-left: 45px"> 
+ 			<div class = "panel-body" style="margin-bottom: -10px"> 
+ 				<div style="width:25px"> <img src="/static/tip-lightbulb.svg"> </div>
+ 				<div style="float:right; width:300px; margin-top: -25px"> <p style="margin-left:10px"> <strong> Tip </strong>: Drag vertically/horizontally to zoom into the chart. You can right-click to restore the original chart. </p> </div>
+ 			</div>
+ 		</div>
+ 	</div>
+
+ 	<div style="width: 1300px; float:right; margin-left: 50px">
+ 		<div class="row" style ="margin-top: 75px;">
+ 			<div class="col-sm-1"> </div>
+ 			<div class="col-sm-2" style="z-index: 1">
+ 				<div>
+ 					<h4> Total Sources </h4>
+ 					<h1 style="margin-top: -5px" id="sourceCount"> 92 </h1>
+ 					<vr></vr>
+ 				</div>
+ 			</div>
+ 			<div class="col-sm-2" style="z-index: 1">
+ 				<div>
+ 					<h4> Total Articles </h4>
+ 					<h1 style="margin-top: -5px" id="articleCount"> 121.0k </h1>
+ 				</div>
+ 			</div>
+ 			<div class="col-sm-2" style="z-index: 1">
+ 				<div>
+ 					<h4> Most FB Shares </h4>
+ 					<h1 style="margin-top: -5px" id="facebookShares"> 213.0k </h1>
+ 				</div>
+ 			</div>
+ 			<div class="col-sm-2" style="z-index: 1">
+ 				<div>
+ 					<h4> Most FB Comments </h4>
+ 					<h1 style="margin-top: -5px" id="facebookComments"> 185.0k</h1>
+ 				</div>
+ 			</div>
+ 			<div class="col-sm-2" style="z-index: 1">
+ 				<div>
+ 					<h4> Most FB Reactions </h4>
+ 					<h1 style="margin-top: -5px" id="facebookReactions"> 695.0k </h1>
+ 				</div>
+ 			</div>
+ 		</div>
+ 		<div id="bubbleChart" style="width: 1300px; height: 700px; margin-top: -50px;"></div>
+ 	</div>
+ </div>
+
+</body>
+
+<html>
+
+
+

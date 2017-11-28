@@ -1,0 +1,13 @@
+.dropdown-menu open {
+	z-index: 2;
+}
+
+.phrase {
+	background-color: #e3e8ef;
+	padding-top: 5px;
+	padding-bottom: 5px;
+	width: 250px;
+	margin-left: 35px;
+	margin-top: 5px;
+	font-size: smaller;
+}
