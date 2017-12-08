@@ -31,9 +31,6 @@ function getAllSources() {
 			// Set source chart option
 			setSourceOptions(sources)
 
-			// Get initial chart data
-			google.charts.setOnLoadCallback(submitData());
-
 		},
 		error: function(chr) {
 		 	console.log("Error!")
@@ -98,6 +95,9 @@ function getDateRange() {
 		      startDate = start.format('YYYY-MM-DD')
 		      endDate = start.format('YYYY-MM-DD')
 		    })
+		    
+		    // Get initial chart data
+			google.charts.setOnLoadCallback(submitData());
 		},
 		error: function(chr) {
 		 	console.log("Error!")
