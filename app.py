@@ -382,7 +382,7 @@ def formatCount(num):
 		return newRepr
 
 if __name__ == "__main__":
-	credsFile = "dbSetup/dbCredentials.json"
+	credsFile = "../dbCredentials.json"
 	jsonCreds = ""
 	try:
 		jsonCreds = open(credsFile)
