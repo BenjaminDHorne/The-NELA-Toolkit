@@ -4,10 +4,13 @@ import json
 import sys
 import ast
 from collections import OrderedDict
+import numpy as np
+import datetime 
 
 app = Flask(__name__)
 db = SQLAlchemy()
 monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+badCollectionData = {}
 
 @app.route("/sourceComparator")
 def main():
@@ -29,25 +32,113 @@ def allSourcesPage():
 
 ### -- Internal APIs for news source page ---
 
+@app.route("/getSourceMetadata")
+def sendSourceMetadata():
+	source = request.args.get("source")
+
+	# Gets latest computed values
+	sqlStatement = "SELECT * " \
+				   "FROM sourceMetadata " \
+				   "WHERE source = '%s' " \
+				   "ORDER BY dateComputed " \
+				   "LIMIT 1 " %(source)
+
+	results = db.engine.execute(sqlStatement)
+	data = {}
+	for row in results:
+		data["perCredible"] = '{0:.3g}'.format(row[1]*100)
+		data["perImpartial"] = '{0:.3g}'.format(row[2]*100)
+		data["isSatire"] = row[3]
+
+		print row
+
+	response = app.response_class(
+		response = json.dumps(data),
+		status = 200,
+		mimetype='application/json'
+	)
+
+	return response
+
+# Gets valid month + year for which source has published articles
+@app.route("/getSourcePublishDates")
+def sendValidSourcePublishDates():
+	source = request.args.get("source")
+	times = getSourcePublishDates(source)
+	data = {}
+	data["dates"] = []
+	for t in times:
+		data["dates"].append(t.strftime("%b %Y"))
+
+	response = app.response_class(
+		response = json.dumps(data),
+		status = 200,
+		mimetype='application/json'
+	)
+
+	return response
+
+def getSourcePublishDates(source):
+	sqlStatement = "SELECT make_date(CAST(y AS INTEGER), CAST(m AS INTEGER), 1) " \
+					   "FROM" \
+					   	"( " \
+	  				   		"SELECT EXTRACT(YEAR FROM datePublished) as y, EXTRACT(MONTH FROM datePublished) as m " \
+	  						"FROM articleFeatures " 
+	if (source != ""):
+		sqlStatement += "WHERE source = '%s' " %(source)
+
+
+	sqlStatement += "GROUP BY EXTRACT(YEAR FROM datePublished), EXTRACT(MONTH FROM datePublished) " \
+	  					") as findDates" 
+
+
+	results = db.engine.execute(sqlStatement)
+	times = []
+	for row in results:
+		times.append(row[0])
+	return times
+
+
 @app.route("/getSourcePublishCounts")
 def sendSourcePublishCounts():
 	source = request.args.get("source")
 
-	sqlStatement = 	"SELECT * " \
-					"FROM sourcePublishCounts " \
+	allDates = dates = getSourcePublishDates("")
+
+	sqlStatement = 	"SELECT EXTRACT(MONTH FROM datePublished) as m, EXTRACT(YEAR FROM datePublished) as y, COUNT(id) " \
+					"FROM articleFeatures " \
 				    "WHERE source = '%s' " \
-				    "ORDER BY month" %(source)
+				    "GROUP BY source, m, y" %(source)
 
 	results = db.engine.execute(sqlStatement)
 
-	data = OrderedDict()
+	data = {}
 	for row in results:
-		month = monthNames[row[1]-1] 
+		month = int(row[0])
+		year = int(row[1])
+		date = datetime.datetime(year, month, 1).strftime("%b %Y")
 		count = row[2]
-		data[month] = count
+		data[date] = count
+
+	dataSorted = OrderedDict()
+	# Add 0 counts for months not available for source and asterix next to month name if due to bad collection
+	for d in allDates:
+		date = d.strftime("%b %Y")
+		month = d.month
+		year = d.year
+		if date not in data:
+			if (source in badCollectionData):
+				for x in badCollectionData[source]:
+					if x["month"] == month and x["year"] == year:
+						date = "*" + date
+						continue
+			dataSorted[date] = {}
+			dataSorted[date] = 0
+		else:
+			dataSorted[date] = data[date]
 
 	response = app.response_class(
-		response = json.dumps(data),
+		response = json.dumps(dataSorted),
 		status = 200,
 		mimetype='application/json'
 	)
@@ -58,26 +149,43 @@ def sendSourcePublishCounts():
 def sendSourceFacebookEngagement():
 	source = request.args.get("source")
 
-	sqlStatement = 	"SELECT * " \
-					"FROM sourceFacebookEngagement " \
-				    "WHERE source = '%s' " \
-				    "ORDER BY month" %(source)
+	allDates = dates = getSourcePublishDates("")
+
+	sqlStatement = 	"SELECT EXTRACT(MONTH FROM datePublished) as m, EXTRACT(YEAR FROM datePublished) as y, SUM(FB_Comment_Counts), SUM(FB_Share_Counts), SUM(FB_Reaction_Counts ) " \
+					"FROM articleFeatures " \
+				    "WHERE source = '%s'" \
+				    "GROUP BY source, m, y" %(source)
 
 	results = db.engine.execute(sqlStatement)
 
-	data = OrderedDict()
+	data = {}
 	for row in results:
-		month = monthNames[row[1]-1] 
+		month = int(row[0])
+		year = int(row[1])
+		date = datetime.datetime(year, month, 1).strftime("%b %Y")
 		comments = row[2]
 		shares = row[3]
 		reactions = row[4]
-		data[month] = {}
-		data[month]["comments"] = comments
-		data[month]["shares"] = shares
-		data[month]["reactions"] = reactions
+		data[date] = {}
+		data[date]["comments"] = comments
+		data[date]["shares"] = shares
+		data[date]["reactions"] = reactions
+
+	dataSorted = OrderedDict()
+	# Add 0 counts for months not available for source
+	for d in allDates:
+		date = d.strftime("%b %Y")
+		if date not in data:
+			dataSorted[date] = {}
+			dataSorted[date]["comments"] = 0
+			dataSorted[date]["shares"] = 0
+			dataSorted[date]["reactions"] = 0
+		else:
+			dataSorted[date] = data[date]
+
 
 	response = app.response_class(
-		response = json.dumps(data),
+		response = json.dumps(dataSorted),
 		status = 200,
 		mimetype='application/json'
 	)
@@ -121,10 +229,11 @@ def sendMostSharedArticles():
 def sendTopPhrases():
 	source = request.args.get("source")
 	month = int(request.args.get("month"))
+	year = int(request.args.get("year"))
 
 	sqlStatement = 	"SELECT * " \
 					"FROM topSourcePhrases " \
-				    "WHERE source = '%s' and month = '%d' " %(source, month)
+				    "WHERE source = '%s' and month = '%d' and year = '%d' " %(source, month, year)
 
 	results = db.engine.execute(sqlStatement)
 
@@ -190,7 +299,7 @@ def sendBubbleChartData():
 	mostFBReactions = 0
 
 	for row in results:
-		print row
+		print str([row[0].encode('utf-8')] + list(row[1:5])) + ","
 		if (mostFBShares < row[6]):
 			mostFBShares = row[6]
 		if (mostFBComments < row[7]):
@@ -223,6 +332,46 @@ def sendBubbleChartData():
 
 	return response 
 
+@app.route("/getDateRange")
+def sendDateRange():
+	sqlStatement = "SELECT MIN(datePublished), MAX(datePublished) " \
+				   "FROM articleFeatures" 
+
+	results = db.engine.execute(sqlStatement)
+	data = {}
+	for row in results:
+		data["startDate"] = row[0].strftime("%Y-%m-%d")
+		data["endDate"] = row[1].strftime("%Y-%m-%d")
+
+
+	response = app.response_class(
+		response = json.dumps(data),
+		status = 200,
+		mimetype='application/json'
+	)
+
+	return response 
+
+@app.route("/getAllSources")
+def sendAllSources():
+	sqlStatement = "SELECT DISTINCT(source) " \
+				   "FROM articleFeatures"
+
+	results = db.engine.execute(sqlStatement)
+	data = {}
+	data["sources"] = []
+	for row in results:
+		data["sources"].append(row[0])
+	data["sources"].sort()
+
+	response = app.response_class(
+		response = json.dumps(data),
+		status = 200,
+		mimetype='application/json'
+	)
+
+	return response 
+
 
 def formatCount(num):
 	if num < 9999:
@@ -233,7 +382,7 @@ def formatCount(num):
 		return newRepr
 
 if __name__ == "__main__":
-	credsFile = "../dbCredentials.json"
+	credsFile = "dbSetup/dbCredentials.json"
 	jsonCreds = ""
 	try:
 		jsonCreds = open(credsFile)
@@ -242,6 +391,10 @@ if __name__ == "__main__":
 		sys.exit(1)
 
 	creds = json.load(jsonCreds)
+
+	badCollectionData = open("badCollection.json")
+	badCollectionData = json.load(badCollectionData)
+
 	POSTGRES = {
 		'user': creds["user"],
 		'pw': creds["passwd"],

@@ -16,10 +16,10 @@
 <body>
 
 <nav class="navbar navbar-inverse navbar-fixed-top"> 
-	<a class="navbar-brand" href="#"> NewsVisualizer </a>
+	<img id ="navLogo" class="navbar-brand" src="/static/logo/logo_small_trans.png"></img>
 	<ul class="nav navbar-nav navbar-right">
 		<li> 
-			<a href="/"> Main </a>
+			<a href="/"> Home </a>
 		</li>
 		<li>
 			<a style="padding-right:50px" href="#"> Help </a>
@@ -59,13 +59,6 @@
 	 			<center> <strong style="font-size: large"> Top Phrases <strong> </center> 
 	 			<hr/>
 	 			<select class="form-control" id="monthPhraseSelector" style="text-align-last: center; padding-right: 29px; direction: ltr; margin-bottom:10px" onchange="updateTopPhrases(this);">
-	 				<option selected="selected" value=4> April </option>
-	 				<option value=5> May </option>
-	 				<option value=6> June </option>
-	 				<option value=7> July </option>
-	 				<option value=8> August </option>
-	 				<option value=9> September </option>
-	 				<option value=10> October </option>
 	 			</select>
 		 		<div id="topPhrases">
 		 			<!-- <div class="phrase">
@@ -93,8 +86,26 @@
  		<div style="width:825px; float: left; padding-left: 50px; padding-top:0.5px">
 	 		<h1 id="sourceName"> </h1>
 	 		<hr/>
+	 		<div id="sourceMetadataVals" class="panel panel-default">
+	 			<div class = "panel-body"> 
+	 				<div id="perCredibleDiv">
+	 					<span style="float:left; margin-right: 5px"> <p style="font-size: smaller"> CREDIBILITY SCORE </p> </span>
+	 					<span class="glyphicon glyphicon-question-sign" title="The percent of articles predicted as credible based on writing style."> </span>
+		 				<p id="perCredibleVal"></p>
+	 				</div>
+	 				<div id="perImpartialDiv">
+	 					<span style="float:left; margin-right: 5px"> <p style="font-size: smaller"> IMPARTIALITY SCORE </p> </span>
+	 					<span class="glyphicon glyphicon-question-sign" title="The percent of articles predicted as impartial based on writing style."> </span>
+		 				<p id="perImpartialVal"></p>
+	 				</div>
+	 			</div>
+	 			<!-- <p id="isSatire" style="font-size:smaller; margin-left: 160px"> *Self-identified satire source </p> -->
+	 		</div>
+
 	 		<div id="articleCountChart" style="width: 825px; height: 300px"> </div>
-	 		<div id="facebookEngagementChart" style="width: 825px; height: 300px"></div>
+	 		<p style="font-size:small; padding-left: 50px"> * Note: There are no articles for months marked with a * due to a failure in collection. </p>
+	 		<div id="facebookEngagementChart" style="width: 825px; height: 300px; padding-bottom: 15px; padding-top: 20px"></div>
+	 		<p style="font-size:small; padding-left: 50px"> * Note: Facebook engagement data was collected on the same day for all articles. Values additionally may not be accurate due to a redirect of the article's link, which was not accounted for in collection. </p>
 	 	</div>
 	 	<div style="width:475px; float: left; margin-top: 30px; padding-left:50px">
 	 		<table class="table table-hover" id="featuredArticles">

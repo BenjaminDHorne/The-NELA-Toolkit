@@ -11,3 +11,67 @@
 	margin-top: 5px;
 	font-size: smaller;
 }
+
+#navLogo {
+	height: 100px;
+	margin-left: -70px;
+	margin-top: -25px;
+	margin-bottom: -40px;
+}
+
+#lowLegendLabel {
+	width: 25px;
+	height: 25px;
+	position: absolute;
+	z-index: 2;
+	margin-left: 125px;
+	margin-top: 30px;
+}
+
+#highLegendLabel {
+	width: 25px;
+	height: 25px;
+	position: absolute;
+	z-index: 2;
+	margin-left: 1150px;
+	margin-top: 30px;
+}
+
+#sourceMetadataVals {
+	width: 540px;
+	margin-left: 140px;
+	margin-bottom: 25px;
+}
+
+#perCredibleDiv {
+	width: 225px;
+	margin-left: 25px;
+	border-right: 1px solid;
+	float: left;
+}
+
+#perCredibleVal {
+	font-size: xx-large;
+	margin-left: 42.5px;
+	width: 75px;
+	margin-top: -5px;
+	margin-bottom: -5px;
+}
+
+#perImpartialDiv {
+	width: 210px;
+	margin-left: -5px;
+	float: right;
+}
+
+#perImpartialVal {
+	font-size: xx-large;
+	margin-left: 42.5px;
+	width: 75px;
+	margin-top: -5px;
+	margin-bottom: -5px;
+}
+
+
+
+

@@ -48,25 +48,6 @@ def loadArticleMetadata(articleData, db):
 
 	db.commit()
 
-def loadSourcePublishCountData(sourcePublishCountData, db):
-	cursor = db.cursor()
-	# Creates table
-	tableCreateSQL = open("sql/sourcePublishCounts.sql").read()
-	cursor.execute(tableCreateSQL)
-	# Loads CSV data into table
-	cursor.copy_from(sourcePublishCountData, "sourcePublishCounts", sep=",")
-
-	db.commit()
-
-def loadSourceFBEngagementData(sourceFBEngagementData, db):
-	cursor = db.cursor()
-	# Creates table
-	tableCreateSQL = open("sql/sourceFacebookEngagement.sql").read()
-	cursor.execute(tableCreateSQL)
-	# Loads CSV data into table
-	cursor.copy_from(sourceFBEngagementData, "sourceFacebookEngagement", sep=",")
-
-	db.commit()
 
 def loadTopSourcePhrasesData(topSourcePhrasesData, db):
 	cursor = db.cursor()
@@ -78,8 +59,18 @@ def loadTopSourcePhrasesData(topSourcePhrasesData, db):
 
 	db.commit()
 
+def loadSourceMetadata(sourceMetadata, db):
+	cursor = db.cursor()
+	# Creates table
+	tableCreateSQL = open("sql/sourceMetadata.sql").read()
+	cursor.execute(tableCreateSQL)
+	# Loads CSV data into table
+	cursor.copy_from(sourceMetadata, "sourceMetadata", sep=",")
+
+	db.commit()
+
 if __name__ == "__main__":
-	credsFile = "../../dbCredentials.json"
+	credsFile = "dbCredentials.json"
 
 	# Check that credentials and article data files exist
 	jsonCreds = ""
@@ -94,19 +85,15 @@ if __name__ == "__main__":
 
 	articleFeatureData = getCSVData("data/articleFeatures.csv")
 	loadArticleFeatureData(articleFeatureData, db)
-	print "Loaded article feature data"
 
 	articleMetadata =  getCSVData("data/articleMetadata.csv")
 	loadArticleMetadata(articleMetadata, db)
-	print "Loaded article metadata"
-
-	sourcePublishCountData = getCSVData("data/sourcePublishCounts.csv")
-	loadSourcePublishCountData(sourcePublishCountData, db)
-
-	sourceFBEngagementData = getCSVData("data/sourceFacebookEngagement.csv")
-	loadSourceFBEngagementData(sourceFBEngagementData, db)
 	
 	topSourcePhrasesData = getCSVData("data/topSourcePhrases.csv")
 	loadTopSourcePhrasesData(topSourcePhrasesData, db)
+
+	sourceMetadata = getCSVData("data/sourceMetadata.csv")
+	loadSourceMetadata(sourceMetadata, db)
+
 
 	

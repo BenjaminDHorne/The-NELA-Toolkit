@@ -1,21 +1,45 @@
 // **** Data used for this page is stored in data.js
 
-// Initial values for chart options
-var sourceValue = "Median"
-var xAxisFeature = "Moral Foundation: Harm"
-var yAxisFeature = "Moral Foundation: Fairness"
-var bubbleColorFeature = "Moral Foundation: Cheating"
-var bubbleSizeFeature = "Moral Foundation: Betrayal"
-var startDate = "2017-04-01"
-var endDate = "2017-10-31"
-var selectedSources = ['AP', 'Activist Post', 'Addicting Info', 'Alternative Media Syndicate', 'BBC', 'Bipartisan Report', 'Breitbart', 'Business Insider', 'BuzzFeed', 'CBS News', 'CNBC', 'CNN', 'CNS News', 'Conservative Tribune', 'Counter Current News', 'Daily Buzz Live', 'Daily Kos', 'Daily Mail', 'Daily Stormer', 'Drudge Report', 'Faking News', 'Fox News', 'Freedom Daily', 'Freedom Outpost', 'FrontPage Magazine', 'Fusion', 'Glossy News', 'Hang The Bankers', 'Humor Times', 'Infowars', 'Intellihub', 'Investors Business Daily', 'Liberty Writers', 'Media Matters for America', 'MotherJones', 'NODISINFO', 'NPR', 'National Review', 'Natural News', 'New York Daily News', 'New York Post', 'NewsBiscuit', 'NewsBusters', 'Newslo', 'Observer', 'Occupy Democrats', 'PBS', 'Palmer Report', 'Politicus USA', 'Prntly', 'RT', 'Real News Right Now', 'RedState', 'Salon', 'Shareblue', 'Slate', 'Talking Points Memo', 'The Atlantic', 'The Beaverton', 'The Borowitz Report', 'The Burrard Street Journal', 'The Chaser', 'The Conservative Tree House', 'The D.C. Clothesline', 'The Daily Beast', 'The Daily Caller', 'The Duran', 'The Fiscal Times', 'The Gateway Pundit', 'The Guardian', 'The Hill', 'The Huffington Post', 'The Inquisitr', 'The New York Times', 'The Political Insider', 'The Real Strategy', 'The Right Scoop', 'The Shovel', 'The Spoof', 'TheBlaze', 'ThinkProgress', 'True Pundit', 'TruthFeed', 'USA Politics Now', 'USA Today', 'Veterans Today', 'Vox', 'Waking Times', 'Washington Examiner', 'World News Politics', 'Yahoo News', 'Young Conservatives']
+// Initial values for chart options 
+var sourceValue = ""
+var xAxisFeature = ""
+var yAxisFeature = ""
+var bubbleColorFeature = ""
+var bubbleSizeFeature = ""
+var startDate = ""
+var endDate = ""
+var selectedSources = []
+var sources = []
 
-jQuery(function() {
+$(document).ready(function () {
+	google.charts.load('current', {'packages':['corechart']});
+	getAllSources()
+	getDateRange()
 	// Initially set x, y, bubble color and bubble size options to top features
 	setFeatureOptions(topFeatures)
-	setSourceOptions(sources)
-	// dateRangePicker()
 });
+
+// Gets all sources stored in the database
+function getAllSources() {
+	$.ajax({
+		type: "GET",
+		url: "/getAllSources",
+		success: function(response) {
+			sources = response["sources"]
+			selectedSources = sources.slice()
+			
+			// Set source chart option
+			setSourceOptions(sources)
+
+			// Get initial chart data
+			google.charts.setOnLoadCallback(submitData());
+
+		},
+		error: function(chr) {
+		 	console.log("Error!")
+		}
+	});
+}
 
 // Sets up options for x, y, bubble color, and bubble size options so there are no repeats
 function setFeatureOptions(features) {
@@ -43,32 +67,43 @@ function setFeatureOptions(features) {
 	});
 }
 
-function setSourceOptions(sources) {
-	for (i=0; i < sources.length; i++) {
+function setSourceOptions(allSources) {
+	for (i=0; i < allSources.length; i++) {
 		var divSources = document.getElementById("sourceSelector")
-		divSources.innerHTML += "<option selected='selected' value='" + sources[i] + "''>" + sources[i] + "</option>"
+		divSources.innerHTML += "<option selected='selected' value='" + allSources[i] + "''>" + allSources[i] + "</option>"
 	}
+	$("#sourceSelector").selectpicker('refresh');
 }
 
-// Initializes date range picker and also gets value of range when changed
-$(function() {
-    $('input[name="daterange"]').daterangepicker();
+function getDateRange() {
+	$.ajax({
+		type: "GET",
+		url: "/getDateRange",
+		success: function(response) {
+			startDate = response["startDate"]
+			endDate = response["endDate"]
 
-    $('input[name="daterange"]').daterangepicker(
-    {
-      locale: {
-        format: 'YYYY-MM-DD'
-      },
-      startDate: '2017-04-01',
-      endDate: '2017-10-31',
-      minDate: '2017-04-01',
-      maxDate: '2017-10-31'
-    }, 
-    function(start, end, label) {
-      startDate = start.format('YYYY-MM-DD')
-      endDate = start.format('YYYY-MM-DD')
-    })
-});
+		  	// Initializes date range picker and also gets value of range when changed
+			$('input[name="daterange"]').daterangepicker(
+		    {
+		      locale: {
+		        format: 'YYYY-MM-DD'
+		      },
+		      startDate: startDate,
+		      endDate: endDate,
+		      minDate: startDate,
+		      maxDate: endDate
+		    }, 
+		    function(start, end, label) {
+		      startDate = start.format('YYYY-MM-DD')
+		      endDate = start.format('YYYY-MM-DD')
+		    })
+		},
+		error: function(chr) {
+		 	console.log("Error!")
+		}
+	});
+}
 
 function drawBubbleChart() {
 
@@ -81,11 +116,14 @@ function drawBubbleChart() {
 
 	var options = {
 		enableInteractivity: true,
-		hAxis: {title: data[0][1], viewWindowMode: 'pretty'},
-		vAxis: {title: data[0][2], viewWindowMode: 'pretty'},
+		chartArea: {width: 1100, height: 575},
+		hAxis: {title: data[0][1], viewWindowMode: 'pretty', textPosition: "none"},
+		vAxis: {title: data[0][2], viewWindowMode: 'pretty', textPosition: "none"},
+		colorAxis: {legend: {textStyle: {color: "white"}}},
 		bubble: {textStyle: {fontSize: 11}},
 		animation: {startup: true, duration: 1000, easing: 'inAndOut'},
-		explorer: { actions: ['dragToZoom', 'rightClickToReset'], maxZoomIn: 4.0}
+		explorer: { actions: ['dragToZoom', 'rightClickToReset'], maxZoomIn: 4.0},
+		tooltip: {trigger: "none"}
 	}
 
 	chart = new google.visualization.BubbleChart(document.getElementById("bubbleChart"));
@@ -100,6 +138,8 @@ function drawBubbleChart() {
 
 	google.visualization.events.addListener(chart, 'select', selectHandler);    
 	chart.draw(dataTransform, options);
+	$("#lowLegendLabel p").text("low")
+	$("#highLegendLabel p").text("high")
 }
 
 function getChartSettings() {

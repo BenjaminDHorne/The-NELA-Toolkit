@@ -2,6 +2,7 @@ drop table if exists topSourcePhrases;
 create table topSourcePhrases(
 source varchar(255),
 month smallint,
+year smallint,
 phrase1 varchar(255),
 phrase2 varchar(255),
 phrase3 varchar(255),

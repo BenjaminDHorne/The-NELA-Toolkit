@@ -6,13 +6,10 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
-		<script type="text/javascript" src="{{ url_for('static', filename = 'js/main.js') }}"></script>
-		<script type="text/javascript" src="{{ url_for('static', filename = 'js/data.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename = 'js/sourceComparator.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static', filename = 'js/featureData.js') }}"></script>
 		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-		<script type="text/javascript">
-	    	google.charts.load('current', {'packages':['corechart']});
-	      	google.charts.setOnLoadCallback(drawBubbleChart);
-	    </script>
+		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 	    <script type="text/javascript" src="//cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 	    <script type="text/javascript" src="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js"></script>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -20,15 +17,14 @@
 		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'index.css') }}"></script>
 		<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
 	</head>
-</html>
 
 <body>
 
-<nav class="navbar navbar-inverse navbar-fixed-top"> 
-	<a class="navbar-brand" href="#"> NewsVisualizer </a>
+<nav class="navbar navbar-inverse navbar-fixed-top" style="z-index: 1"> 
+	<img id ="navLogo" class="navbar-brand" src="/static/logo/logo_small_trans.png"></img>
 	<ul class="nav navbar-nav navbar-right">
 		<li> 
-			<a href="/"> Main </a>
+			<a href="/"> Home </a>
 		</li>
 		<li>
 			<a style="padding-right:50px" href="#"> Help </a>
@@ -107,7 +103,7 @@
  		<div class="panel panel-default" style="margin-top: 15px; margin-left: 45px"> 
  			<div class = "panel-body" style="margin-bottom: -10px"> 
  				<div style="width:25px"> <img src="/static/tip-lightbulb.svg"> </div>
- 				<div style="float:right; width:300px; margin-top: -25px"> <p style="margin-left:10px"> <strong> Tip </strong>: Drag vertically/horizontally to zoom into the chart. You can right-click to restore the original chart. </p> </div>
+ 				<div style="float:right; width:300px; margin-top: -25px"> <p style="margin-left:10px"> <strong> Tip </strong>: Drag vertically/horizontally to pan and zoom into the chart. You can right-click to restore the original chart. </p> </div>
  			</div>
  		</div>
  	</div>
@@ -118,42 +114,46 @@
  			<div class="col-sm-2" style="z-index: 1">
  				<div>
  					<h4> Total Sources </h4>
- 					<h1 style="margin-top: -5px" id="sourceCount"> 92 </h1>
+ 					<h1 style="margin-top: -5px" id="sourceCount"></h1>
  					<vr></vr>
  				</div>
  			</div>
  			<div class="col-sm-2" style="z-index: 1">
  				<div>
  					<h4> Total Articles </h4>
- 					<h1 style="margin-top: -5px" id="articleCount"> 121.0k </h1>
+ 					<h1 style="margin-top: -5px" id="articleCount"></h1>
  				</div>
  			</div>
  			<div class="col-sm-2" style="z-index: 1">
  				<div>
  					<h4> Most FB Shares </h4>
- 					<h1 style="margin-top: -5px" id="facebookShares"> 213.0k </h1>
+ 					<h1 style="margin-top: -5px" id="facebookShares"></h1>
  				</div>
  			</div>
  			<div class="col-sm-2" style="z-index: 1">
  				<div>
  					<h4> Most FB Comments </h4>
- 					<h1 style="margin-top: -5px" id="facebookComments"> 185.0k</h1>
+ 					<h1 style="margin-top: -5px" id="facebookComments"></h1>
  				</div>
  			</div>
  			<div class="col-sm-2" style="z-index: 1">
  				<div>
  					<h4> Most FB Reactions </h4>
- 					<h1 style="margin-top: -5px" id="facebookReactions"> 695.0k </h1>
+ 					<h1 style="margin-top: -5px" id="facebookReactions"></h1>
  				</div>
  			</div>
  		</div>
- 		<div id="bubbleChart" style="width: 1300px; height: 700px; margin-top: -50px;"></div>
+ 		<div>
+	 		<div id="lowLegendLabel"><p style="font-weight:700"></p></div>
+	 		<div id="highLegendLabel"><p style="font-weight:700"></p></div>
+	 		<div id="bubbleChart" style="width: 1300px; height: 700px;"></div>
+	 	</div>
  	</div>
  </div>
 
 </body>
 
-<html>
+</html>
 
 
 

@@ -1,6 +1,6 @@
 // **** Data used for this page is stored in sourceData.js
 
-
+var abbrevMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 // Array to hold data for the charts
 var articleCountData = [];
 var facebookEngagementData = [];
@@ -17,9 +17,9 @@ function getURLParameter(name) {
 $(document).ready(function () {
 	source = getURLParameter("source")
 	getSourceInfo()
+	getSourceValues()
 	getFeaturedArticles()
-	var initialMonth = 4
-	getTopPhrases(initialMonth)		// Initially get phrases for April
+	getSourcePublishDates()
 	google.charts.load('current', {'packages':['corechart']});
 	google.charts.setOnLoadCallback(getArticleCountChartData());
 	google.charts.setOnLoadCallback(getFacebookEngagementChartData());
@@ -34,6 +34,37 @@ function getSourceInfo() {
 	document.getElementById("foundedLabel").innerHTML = sourceData[source]["founded"]
 	document.getElementById("websiteLabel").innerHTML = sourceData[source]["website"]
 	document.getElementById("websiteLabel").href = "http://www." + sourceData[source]["website"]
+}
+
+// Get credibility/impartiality values or show that it is a satire source
+function getSourceValues() {
+	$.ajax({
+	type: "GET",
+	url: "/getSourceMetadata",
+	data: {
+		source: source
+	},
+	success: function(response) {
+		var perCredible = response["perCredible"]
+		var perImpartial = response["perImpartial"]
+		var isSatire = response["isSatire"]
+		if (isSatire == 1) {
+			$("#perCredibleVal").text(" N/A")
+			$("#perImpartialVal").text(" N/A")
+			var $isSatire = $("<p id='isSatire' style='font-size:smaller; margin-left: 160px'> *Self-identified satire source </p>")
+			$("#sourceMetadataVals").append($isSatire)
+		}
+		else {
+			$("#perCredibleVal").text(perCredible + "%")
+			$("#perImpartialVal").text(perImpartial + "%")
+			$("#isSatire").remove()
+		}
+			
+	},
+	error: function(chr) {
+	  console.log("Error!")
+	}
+  });
 }
 
 function getArticleCountChartData() {
@@ -54,13 +85,43 @@ function getArticleCountChartData() {
 		var row = 1
 		var colorIndex = 0
 		for (var month in response) {
-			var monthCount = response[month]
+			var monthCount = response[month] 
 			articleCountData[row] = [month, monthCount, colors[colorIndex]]
 			row += 1
 			colorIndex += 1
+			if (colorIndex == 7) {
+				colorIndex = 0;
+			}
 		} 
 
 		google.charts.setOnLoadCallback(articleCountChart);
+	},
+	error: function(chr) {
+	  console.log("Error!")
+	}
+  });
+}
+
+// Gets valid source publish dates for top phrase selector
+function getSourcePublishDates() {
+	$.ajax({
+	type: "GET",
+	url: "/getSourcePublishDates",
+	data: {
+		source: source
+	},
+	success: function(response) {
+		var monthPhraseSelector = document.getElementById("monthPhraseSelector")
+		for (var i in response["dates"]) {
+			// Set initial top phrases
+			if (i == 0) {
+				var date = response["dates"][i].split(" ")
+				var month = abbrevMonths.indexOf(date[0]) + 1
+				var year = date[1]
+				getTopPhrases(month, year)
+			}
+			monthPhraseSelector.innerHTML += "<option>" + response["dates"][i] + "</option>"
+		}
 	},
 	error: function(chr) {
 	  console.log("Error!")
@@ -147,7 +208,7 @@ function getFeaturedArticles() {
 			url = articles[i]["url"]
 			title = articles[i]["title"]
 			shares = articles[i]["shares"]
-			$("#featuredArticles").append("<tr><td><a style='font-weight:600' href='" + url + "'>" + title + "</a></td><<td>" + shares + "</td></tr>");
+			$("#featuredArticles").append("<tr><td><a style='font-weight:600' href='" + url + "' target='_blank'>" + title + "</a></td><<td>" + shares + "</td></tr>");
 		}
 
 	},
@@ -160,17 +221,20 @@ function getFeaturedArticles() {
 
 // Update shown top phrases when user clicks new month
 function updateTopPhrases(sel) {
-	var month = sel.value
-	getTopPhrases(month)
+	var date = sel.value.split(" ")
+	var month = abbrevMonths.indexOf(date[0]) + 1
+	var year = date[1]
+	getTopPhrases(month, year)
 }
 
-function getTopPhrases(month) {
+function getTopPhrases(monthInt, year) {
 	$.ajax({
 	type: "GET",
 	url: "/getTopSourcePhrases",
 	data: {
 		source: source,
-		month: month
+		month: monthInt,
+		year: year
 	},
 	success: function(response) {
 		$("#topPhrases").html("");

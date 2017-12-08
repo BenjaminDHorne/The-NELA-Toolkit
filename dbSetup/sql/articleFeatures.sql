@@ -283,7 +283,7 @@ AuthorityVice_title float,
 PurityVirtue_title float,
 PurityVice_title float,
 MoralityGeneral_title float,
-FB_Comment_Counts integer,
-FB_Share_Counts integer,
-FB_Reaction_Counts integer,
-clickbait smallint);
+FB_Comment_Counts float,
+FB_Share_Counts float,
+FB_Reaction_Counts float,
+clickbait float);
