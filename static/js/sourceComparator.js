@@ -96,6 +96,9 @@ function getDateRange() {
 		      endDate = start.format('YYYY-MM-DD')
 		    })
 		    
+		    startDate = response["startDate"]
+			endDate = response["endDate"]
+			
 		    // Get initial chart data
 			google.charts.setOnLoadCallback(submitData());
 		},

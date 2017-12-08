@@ -4,7 +4,6 @@ import json
 import sys
 import ast
 from collections import OrderedDict
-import numpy as np
 import datetime 
 
 app = Flask(__name__)
