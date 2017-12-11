@@ -13,20 +13,19 @@ var sources = []
 
 $(document).ready(function () {
 	google.charts.load('current', {'packages':['corechart']});
-	getAllSources()
-	getDateRange()
 	// Initially set x, y, bubble color and bubble size options to top features
 	setFeatureOptions(topFeatures)
 
 	// Get initial chart data
-	$(document).ajaxStop(function () {
+	$.when(getAllSources(), getDateRange()).done(function() {
 		google.charts.setOnLoadCallback(submitData());
-	});
+
+	})
 });
 
 // Gets all sources stored in the database
 function getAllSources() {
-	$.ajax({
+	return $.ajax({
 		type: "GET",
 		url: "/getAllSources",
 		success: function(response) {
@@ -78,7 +77,7 @@ function setSourceOptions(allSources) {
 }
 
 function getDateRange() {
-	$.ajax({
+	return $.ajax({
 		type: "GET",
 		url: "/getDateRange",
 		success: function(response) {
