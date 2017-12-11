@@ -96,8 +96,8 @@ def getSourcePublishDates(source):
 	for row in results:
 		times.append(row[0])
 
+	print times
 	times.sort()
-	
 	return times
 
 
@@ -105,7 +105,7 @@ def getSourcePublishDates(source):
 def sendSourcePublishCounts():
 	source = request.args.get("source")
 
-	allDates = dates = getSourcePublishDates("")
+	allDates = getSourcePublishDates("")
 
 	sqlStatement = 	"SELECT EXTRACT(MONTH FROM datePublished) as m, EXTRACT(YEAR FROM datePublished) as y, COUNT(id) " \
 					"FROM articleFeatures " \

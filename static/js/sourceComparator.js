@@ -17,7 +17,31 @@ $(document).ready(function () {
 	setFeatureOptions(topFeatures)
 
 	// Get initial chart data
-	$.when(getAllSources(), getDateRange()).done(function() {
+	$.when(getAllSources(), getDateRange()).done(function(a1, a2) {
+		sources = a1[0]["sources"]
+		selectedSources = sources.slice()
+		// Set source chart option
+		setSourceOptions(sources)
+		startDate = a2[0]["startDate"]
+		endDate = a2[0]["endDate"]
+
+	  	// Initializes date range picker and also gets value of range when changed
+		$('input[name="daterange"]').daterangepicker(
+	    {
+	      locale: {
+	        format: 'YYYY-MM-DD'
+	      },
+	      startDate: startDate,
+	      endDate: endDate,
+	      minDate: startDate,
+	      maxDate: endDate
+	    }, 
+	    function(start, end, label) {
+	      startDate = start.format('YYYY-MM-DD')
+	      endDate = start.format('YYYY-MM-DD')
+	    })
+	    
+	    // Get initial chart data
 		google.charts.setOnLoadCallback(submitData());
 
 	})
@@ -29,12 +53,7 @@ function getAllSources() {
 		type: "GET",
 		url: "/getAllSources",
 		success: function(response) {
-			sources = response["sources"]
-			selectedSources = sources.slice()
-			
-			// Set source chart option
-			setSourceOptions(sources)
-
+			// In the $.when function
 		},
 		error: function(chr) {
 		 	console.log("Error!")
@@ -81,30 +100,7 @@ function getDateRange() {
 		type: "GET",
 		url: "/getDateRange",
 		success: function(response) {
-			startDate = response["startDate"]
-			endDate = response["endDate"]
-
-		  	// Initializes date range picker and also gets value of range when changed
-			$('input[name="daterange"]').daterangepicker(
-		    {
-		      locale: {
-		        format: 'YYYY-MM-DD'
-		      },
-		      startDate: startDate,
-		      endDate: endDate,
-		      minDate: startDate,
-		      maxDate: endDate
-		    }, 
-		    function(start, end, label) {
-		      startDate = start.format('YYYY-MM-DD')
-		      endDate = start.format('YYYY-MM-DD')
-		    })
-		    
-		    startDate = response["startDate"]
-			endDate = response["endDate"]
-			
-		    // Get initial chart data
-			google.charts.setOnLoadCallback(submitData());
+			// In the $.when function
 		},
 		error: function(chr) {
 		 	console.log("Error!")
