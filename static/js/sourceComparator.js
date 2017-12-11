@@ -17,6 +17,11 @@ $(document).ready(function () {
 	getDateRange()
 	// Initially set x, y, bubble color and bubble size options to top features
 	setFeatureOptions(topFeatures)
+
+	// Get initial chart data
+	$(document).ajaxStop(function () {
+		google.charts.setOnLoadCallback(submitData());
+	});
 });
 
 // Gets all sources stored in the database

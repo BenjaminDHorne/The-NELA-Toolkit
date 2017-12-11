@@ -33,8 +33,8 @@ def loadArticleFeatureData(articleData, db):
 	# Loads CSV data into table
 	cursor.copy_from(articleData, "articleFeatures", sep=",")
 	# Creates indices
-	indexCreateSQL = open("sql/articleFeatures2.sql").read()
-	cursor.execute(indexCreateSQL)
+	# indexCreateSQL = open("sql/articleFeatures2.sql").read()
+	# cursor.execute(indexCreateSQL)
 
 	db.commit()
 
