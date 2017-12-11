@@ -95,6 +95,9 @@ def getSourcePublishDates(source):
 	times = []
 	for row in results:
 		times.append(row[0])
+
+	times.sort()
+	
 	return times
 
 
