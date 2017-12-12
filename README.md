@@ -14,7 +14,7 @@ To support the tool's back-end, [PostgreSQL](https://www.postgresql.org/) must b
 
     {
     	"host":"",
-        "user":"",
+    	"user":"",
     	"passwd":"",
     	"db":"",
     	"port":""
@@ -99,7 +99,7 @@ A portion of this data is shown below:
 
 	{
 	...
-		"Average Word Length": "wordlen",
+	    "Average Word Length": "wordlen",
         "Word Count": "WC",
         "Probability of Objectivity": "NB_pobj",
         "Probability of Subjectivity": "NB_psubj",
