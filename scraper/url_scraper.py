@@ -14,6 +14,7 @@ def fix(text):
     return text
 
 def scrape(url):
+    print "Starting Scraper"
     g = Goose()
     try:
         article = g.extract(url=url)
