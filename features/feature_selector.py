@@ -17,6 +17,7 @@ def load_top_features(communities):
     return top
 
 def feature_select(path):
+    print "Got to feature selection"
     #top_features = load_top_features(["news", "conspiracy", "Republican", "Democrats"])
     features_for_fake = load_features_selected("fake")
     features_for_bias = load_features_selected("bias")
