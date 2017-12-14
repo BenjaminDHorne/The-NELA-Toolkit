@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
 div.url {
-    color: white;
-    background-color: black;
+    /*color: white;
+    background-color: black;*/
     padding: 10px;
 }
 div.source_table {
@@ -17,18 +17,37 @@ div.source_table {
     padding: 10px;
 }
 </style>
-<link rel="stylesheet" href="js/jquery-ui.css">
-<script src="js/jquery-1.12.4.js"></script>
-<script src="js/jquery-ui.js"></script>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'jquery-ui.css') }}">
+<script type="text/javascript" src="{{ url_for('static', filename = 'js/jquery-1.12.4.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', filename = 'js/jquery-ui.js') }}"></script>
 
 </head>
 <body>
-<script src="js/d3.v3.min.js"></script>
-<script src="js/plotly-latest.min.js"></script>
-<div class="url">
+<script type="text/javascript" src="{{ url_for('static', filename = 'js/d3.v3.min.js') }}"></script>
+<!-- Added files -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'index.css') }}"></script>
+
+<!-- Added navbar -->
+<nav class="navbar navbar-inverse navbar-fixed-top" style="z-index: 3"> 
+  <img id ="navLogo" class="navbar-brand" src="/static/logo/logo_small_trans.png"></img>
+  <ul class="nav navbar-nav navbar-right">
+    <li> 
+      <a href="/"> Home </a>
+    </li>
+    <li>
+      <a style="padding-right:50px" href="/help"> Help </a>
+    </li>
+  </ul>
+</nav>
+
+<div class="url"  style="margin-top: 50px">
 <form action="/article" method="POST">
-<h1>Credibility Toolkit</h1>
-  <input name="url" list="urls" style="width:91%">
+<!-- <h1>Credibility Toolkit</h1> -->
+  <input name="url" list="urls" style="width:91%; margin-top: 25px">
   <datalist id="urls">
     <option value="http://www.npr.org/sections/thetwo-way/2016/12/10/505103338/in-reversal-gambian-president-rejects-loss-and-calls-for-new-election">
     <option value="http://www.nytimes.com/2017/06/23/us/politics/paul-manafort-jeffrey-yohai.html">
@@ -39,49 +58,56 @@ div.source_table {
     <option value="https://www.washingtonpost.com/powerpost/senate-gop-leaders-set-to-unveil-health-care-bill/2017/06/22/56dbe35c-5734-11e7-a204-ad706461fa4f_story.html?utm_term=.b
 3b85da9a1f7">
   </datalist>
-  <input type="submit" value="Add Page" style="width:8%">
+  <input type="submit" class="value="Add Page" style="width:7%">
 </form>
-<p>
+</div>
 
 <!-- Objectivity Sliders -->
+<div id="panelContainer" style="margin-left:10px">
+<div class='panel panel-default' style="width:800px;">
+<div class="panel-heading" style="font-weight:bold; font-size:larger"> <center> Table Filters </center> </div>
+<div class="panel-body">
 <table><tbody>
 
 <tr><td>
 <label for="credibility-slider-vals">Credibility Range:</label>
-<input type="text" id="credibility-slider-vals" readonly style="border:0; color:#f6931f; background-color:#000000;">
+<input type="text" id="credibility-slider-vals" readonly style="border:0; color:#f6931f; /*background-color:#000000;*/">
 </td><td width="50%">
 <div id="credibility-slider"></div>
 </td></tr>
 
 <tr><td>
 <label for="bias-slider-vals">Political Impartiality Range:</label>
-<input type="text" id="bias-slider-vals" readonly style="border:0; color:#f6931f; background-color:#000000;">
+<input type="text" id="bias-slider-vals" readonly style="border:0; color:#f6931f; /*background-color:#000000;*/">
 </td><td width="50%">
 <div id="bias-slider"></div>
 </td></tr>
 
 <tr><td>
 <label for="title-slider-vals">Title Objectivity Range:</label>
-<input type="text" id="title-slider-vals" readonly style="border:0; color:#f6931f; background-color:#000000;">
+<input type="text" id="title-slider-vals" readonly style="border:0; color:#f6931f; /*background-color:#000000;*/">
 </td><td width="50%">
 <div id="title-slider"></div>
 </td></tr>
 
 <tr><td>
 <label for="text-slider-vals">Text Objectivity Range:</label>
-<input type="text" id="text-slider-vals" readonly style="border:0; color:#f6931f; background-color:#000000;">
+<input type="text" id="text-slider-vals" readonly style="border:0; color:#f6931f; /*background-color:#000000;*/">
 </td><td width="50%">
 <div id="text-slider"></div>
 </td></tr>
 
 <tr><td>
 <label for="community-slider-vals">Community Rating Range:</label>
-<input type="text" id="community-slider-vals" readonly style="border:0; color:#f6931f; background-color:#000000;">
+<input type="text" id="community-slider-vals" readonly style="border:0; color:#f6931f; /*background-color:#000000;*/">
 </td><td width="50%">
 <div id="community-slider"></div>
 </td></tr>
 
 </tbody></table>
+</div>
+</div>
+</div>
 <p>
 
 <!-- div id="community_buttons" width="100%">Community Types:<br></div>
@@ -90,7 +116,7 @@ div.source_table {
 </div>
 <p>
 
-<div class="source_table" id="source_table" width="100%"></div>
+<!-- <div class="source_table" id="source_table" width="100%"></div> -->
 <p>
 <div id="article_table" width="100%"></div>
 <p>

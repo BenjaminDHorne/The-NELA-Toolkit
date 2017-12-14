@@ -30,9 +30,8 @@ function addSourcesToView(sources) {
 	}
 	
 	$(".clickableRow").click(function() {
-    	console.log("Do you get here?")
     	source = $(this).text();
-        window.location.href = "/newsSource?source=" + source;
+        window.location.href = "/newssource?source=" + source;
     });
 
 }

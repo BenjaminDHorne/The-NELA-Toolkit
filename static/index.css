@@ -72,6 +72,41 @@
 	margin-bottom: -5px;
 }
 
+#homeContainer {
+	top: 50%;
+	left: 50%;
+	position: fixed;
+	transform: translate(-50%, -50%);
+	width: 50%;
+	height: 50%;
+	background-color: white;
+	z-index: 2;
+}
 
+#credToolkitButton {
+	position: absolute;
+	top: 60%;
+	left: 34%;
+	width: 15%;
+	font-size: 1.2vw;
+	z-index: 2;
+}
+
+#visualizationButton {
+	position: absolute;
+	top: 60%;
+	left: 51%;
+	width: 15%;
+	font-size: 1.2vw;
+	z-index: 2;
+}
+
+#homeLogo {
+	position: absolute;
+	top: 35%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 65%;
+}
 
 

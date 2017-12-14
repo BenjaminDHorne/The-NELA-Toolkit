@@ -135,7 +135,7 @@ function drawBubbleChart() {
 		var selectedItem = chart.getSelection()[0];
 		if (selectedItem) {
 			source = data[selectedItem.row+1][0]
-			window.location.href = "/newsSource?source=" + source;
+			window.location.href = "/newssource?source=" + source;
 		}
 	}
 
@@ -159,36 +159,36 @@ function getChartSettings() {
 }
 
 
-// Updates selected chart feature settings when one selected (need to test this)
-$(function() {
-  $('.form-control').on('change', function() {
+// Updates selected chart feature settings so no two settings are the same
+// $(function() {
+//   $('.form-control').on('change', function() {
 
-	var selectedText = $(this).find("option:selected").text()
-	var options = ["xAxisSelector", "yAxisSelector", "bubbleColorSelector", "bubbleSizeSelector"]
-	var f = $(this).attr('id')
-	var index = options.indexOf(f)
+// 	var selectedText = $(this).find("option:selected").text()
+// 	var options = ["xAxisSelector", "yAxisSelector", "bubbleColorSelector", "bubbleSizeSelector"]
+// 	var f = $(this).attr('id')
+// 	var index = options.indexOf(f)
 
-	for (var i=0; i < options.length; i++) {
-	  if (i != index) {
-		var selectedOption = $("#" + options[i]).find("option:selected").text()
-		if (selectedOption == selectedText) {
-		  var invalid = []
-		  for (var j=0; j < options.length; j++) {
-			if (i != j) {
-			  invalid.push($("#" + options[j]).find("option:selected").text())
-			}
-		  }
-		  $("#" + options[i] + " option").each(function() {
-			if (invalid.indexOf($(this).text()) == -1) {
-			  $(this).prop("selected", true);
-			  return false;
-			}
-		  });
-		}
-	  }
-	}
-  });
-});
+// 	for (var i=0; i < options.length; i++) {
+// 	  if (i != index) {
+// 		var selectedOption = $("#" + options[i]).find("option:selected").text()
+// 		if (selectedOption == selectedText) {
+// 		  var invalid = []
+// 		  for (var j=0; j < options.length; j++) {
+// 			if (i != j) {
+// 			  invalid.push($("#" + options[j]).find("option:selected").text())
+// 			}
+// 		  }
+// 		  $("#" + options[i] + " option").each(function() {
+// 			if (invalid.indexOf($(this).text()) == -1) {
+// 			  $(this).prop("selected", true);
+// 			  return false;
+// 			}
+// 		  });
+// 		}
+// 	  }
+// 	}
+//   });
+// });
 
 function submitData() {
 	getChartSettings()

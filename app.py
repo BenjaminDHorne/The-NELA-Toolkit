@@ -11,7 +11,15 @@ db = SQLAlchemy()
 monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 badCollectionData = {}
 
-@app.route("/sourceComparator")
+@app.route("/")
+def home():
+	return render_template('home.html')
+
+@app.route("/credibilitytoolkit")
+def credibility():
+	return render_template('view_all.html')
+
+@app.route("/visualizationtoolkit")
 def main():
 	return render_template('sourceComparator.html')
 
@@ -19,13 +27,21 @@ def main():
 def aboutPage():
 	return render_template('about.html')
 
-@app.route("/newsSource")
+@app.route("/help")
+def help():
+	return render_template('help.html')
+
+@app.route("/newssource")
 def sourcePage():
 	return render_template('newsSource.html')
 
-@app.route("/allSources")
+@app.route("/allsources")
 def allSourcesPage():
 	return render_template('allSources.html')
+
+@app.route("/features")
+def features():
+	return render_template('features.html')
 
 ### --- Define internal APIs ---
 
