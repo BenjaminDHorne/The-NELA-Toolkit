@@ -9,6 +9,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 DIRNAME = os.path.dirname(__file__)
 
 def subjectivity(title, text):
+    print "Computing subjectivity"
     try:
         loaded_model = pickle.load(open(os.path.join(DIRNAME, 'resources', 'NB_Subj_Model.sav'), 'rb'))
         count_vect = pickle.load(open(os.path.join(DIRNAME, 'resources', 'count_vect.sav'), 'rb'))
