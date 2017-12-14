@@ -239,6 +239,7 @@ def make_str(seq):
 #main
 
 def start(title_text, text, source, outpath):
+    print "Got to Feature Comp"
     # Setup path function will create the output directory if it does not exist
     pos_features_path = setup_path(outpath, "pos_tagged_files")
 
