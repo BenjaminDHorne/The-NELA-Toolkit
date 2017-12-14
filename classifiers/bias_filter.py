@@ -9,6 +9,7 @@ import numpy as np
 DIRNAME = os.path.dirname(__file__)
 
 def bias_fitler(featurepath):
+    print "Predicting bias"
     with open(os.path.join(featurepath, "bias_features.csv")) as data:
         data.readline()
         x_test = data.readline().strip().split(",")
