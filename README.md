@@ -4,7 +4,7 @@ The Credibility Toolkit is a visual tool-set that provides several measures of a
 
 The Credibility Toolkit was built using the Flask framework and uses PostgreSQL as its database. 
 
-The project is currently running at **http://104.236.229.25/**. 
+The project is currently running at **http://104.236.229.250/**. 
 
 ## Installing Dependencies
 
