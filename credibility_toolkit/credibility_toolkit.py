@@ -192,7 +192,7 @@ def source_test():
 # Main
 if __name__ == "__main__":
   output = OrderedDict()
-  json_filename = os.path.join("web", "static", "output.json")
+  json_filename = os.path.join("..", "static", "output.json")
 
   if len(sys.argv) > 1 and sys.argv[1] == "--nobulk":
     sys.argv.pop(1)
