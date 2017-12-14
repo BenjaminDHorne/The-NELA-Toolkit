@@ -8,7 +8,7 @@ import datetime
 import os
 import logging
 
-sys.path.append("../credibility_toolkit")
+sys.path.append("../credibility_toolkit/credibility_toolkit.py")
 from credibility_toolkit import parse_url
 
 app = Flask(__name__)
