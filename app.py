@@ -11,13 +11,23 @@ db = SQLAlchemy()
 monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 badCollectionData = {}
 
+@app.after_request
+def add_header(response):
+  """
+  Add headers to both force latest IE rendering engine or Chrome Frame, and
+  also to cache the rendered page for 10 minutes.
+  """
+  response.headers['X-UA-Compatible'] = 'IE=Edge,chrome=1'
+  response.headers['Cache-Control'] = 'public, max-age=0'
+  return response
+
 @app.route("/")
 def home():
 	return render_template('home.html')
 
 @app.route("/credibilitytoolkit")
 def credibility():
-	return render_template('view_all.html')
+	return render_template('view_all.html', json="static/output.json")
 
 @app.route("/visualizationtoolkit")
 def main():
@@ -42,6 +52,53 @@ def allSourcesPage():
 @app.route("/features")
 def features():
 	return render_template('features.html')
+
+# --- Credibility toolkit internal APIs
+
+@app.route("/article", methods=['GET', 'POST'])
+def article():
+  """
+  when the user wants to add an article, this function will get called. We will
+  then load the json file, run the credibility toolkit on the url, and then
+  append the results to the json file.
+  """
+  url = False
+  if 'url' in request.form :
+    url = request.form['url']
+
+    with open(os.path.join("static", "output.json"), 'r') as infile:
+      output = json.load(infile)
+
+    # check if we already have this url parsed, if so, reparse it
+    output["urls"] = filter(lambda x: x["url"] != url, output["urls"])
+
+    parse_url(output, url)
+
+    with open(os.path.join("static", "output.json"), 'w') as outfile:
+      json.dump(output, outfile, indent=2)
+
+  #return render_template('view_all.html', json="static/output.json", newurl=url)
+  return redirect("/", code=302)
+
+@app.route("/remove", methods=['GET', 'POST'])
+def remove():
+  """
+  remove an article from output.json
+  """
+  url = False
+  if 'url' in request.form :
+    url = request.form['url']
+
+    with open(os.path.join("static", "output.json"), 'r') as infile:
+      output = json.load(infile)
+
+    # check if we already have this url parsed, if so, reparse it
+    output["urls"] = filter(lambda x: x["url"] != url, output["urls"])
+
+    with open(os.path.join("static", "output.json"), 'w') as outfile:
+      json.dump(output, outfile, indent=2)
+
+  return redirect("/", code=302)
 
 ### --- Define internal APIs ---
 
