@@ -9,6 +9,7 @@ import numpy as np
 DIRNAME = os.path.dirname(__file__)
 
 def community_fitler(featurepath):
+    print "Predicting community interests"
     with open(os.path.join(featurepath, "newsVSconsp_features.csv")) as data:
         data.readline()
         x_test = data.readline().strip().split(",")
