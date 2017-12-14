@@ -1,0 +1,11 @@
+Lexicon of subjective words from Riloff and Wiebe (2003)
+http://mpqa.cs.pitt.edu/lexicons/subj_lexicon/
+
+Opinion lexicon from Liu et al. (2005)
+http://www.cs.uic.edu/~liub/FBS/opinion-lexicon-English.rar
+
+Entailments from Berant et al. (2012)
+http://u.cs.biu.ac.il/~nlp/downloads/ReverbLocalGlobal.html
+
+Bias lexicon introduced in our paper
+http://www.mpi-sws.org/~cristian/Biased_language.html
