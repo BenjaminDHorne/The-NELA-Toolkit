@@ -9,6 +9,7 @@ import numpy as np
 DIRNAME = os.path.dirname(__file__)
 
 def fake_fitler(featurepath):
+    print "Predicting reliability"
     with open(os.path.join(featurepath, "fake_features.csv")) as data:
         data.readline()
         x_test = data.readline().strip().split(",")
