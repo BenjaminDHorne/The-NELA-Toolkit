@@ -7,8 +7,6 @@ from collections import OrderedDict
 import datetime 
 import os
 import logging
-
-sys.path.append("../credibility_toolkit/credibility_toolkit.py")
 from credibility_toolkit import parse_url
 
 app = Flask(__name__)
@@ -83,7 +81,7 @@ def article():
       json.dump(output, outfile, indent=2)
 
   #return render_template('view_all.html', json="static/output.json", newurl=url)
-  return redirect("/", code=302)
+  return redirect("/credibilitytoolkit", code=302)
 
 @app.route("/remove", methods=['GET', 'POST'])
 def remove():
@@ -103,7 +101,7 @@ def remove():
     with open(os.path.join("static", "output.json"), 'w') as outfile:
       json.dump(output, outfile, indent=2)
 
-  return redirect("/", code=302)
+  return redirect("/credibilitytoolkit", code=302)
 
 ### --- Define internal APIs ---
 
