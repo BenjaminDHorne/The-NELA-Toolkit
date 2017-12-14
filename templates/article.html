@@ -1,0 +1,48 @@
+<html>
+<head>
+<style>
+div.url {
+    color: white;
+    background-color: black;
+    padding: 10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="url">
+<form action="/article" method="POST">
+<h1>Credibility Toolkit</h1>
+  <input name="url" list="urls" size="200">
+  <datalist id="urls">
+    <option value="http://www.npr.org/sections/thetwo-way/2016/12/10/505103338/in-reversal-gambian-president-rejects-loss-and-calls-for-new-election">
+    <option value="http://www.nytimes.com/2017/06/23/us/politics/paul-manafort-jeffrey-yohai.html">
+    <option value="http://www.nytimes.com/2017/06/23/world/middleeast/immigration-asylum-syria-terrorism.html">
+    <option value="http://www.infowars.com/media-attempts-to-omit-legal-status-of-man-arrested-for-murder-of-muslim-girl">
+    <option value="http://beforeitsnews.com/opinion-liberal/2017/06/yes-mr-putin-we-americans-have-lost-our-mind-2555917.html">
+    <option value="http://www.cbsnews.com/news/vladimir-putin-gave-direct-instructions-help-elect-donald-trump-report/">
+    <option value="https://www.washingtonpost.com/powerpost/senate-gop-leaders-set-to-unveil-health-care-bill/2017/06/22/56dbe35c-5734-11e7-a204-ad706461fa4f_story.html?utm_term=.b3b85da9a1f7">
+    <option value="http://www.theonion.com/graphic/sean-spicer-cradling-comfort-pig-throughout-briefi-56317">
+  </datalist>
+  <input type="submit" value="Submit">
+</form>
+</div>
+ 
+{% if result %}
+<pre>
+{{ result }}
+</pre>
+{% endif %}
+
+{% if title and text %}
+<hr>
+TITLE: {{ title }}<p>
+
+TEXT: {{ text }}<p>
+{% endif %}
+
+
+</body>
+</html>
