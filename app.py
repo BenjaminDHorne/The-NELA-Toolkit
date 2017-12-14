@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, url_for, send_from_directory, redirect
 from flask_sqlalchemy import SQLAlchemy
 import json
 import sys
@@ -6,6 +6,10 @@ import ast
 from collections import OrderedDict
 import datetime 
 import os
+import logging
+
+sys.path.append("../credibility_toolkit")
+from credibility_toolkit import parse_url
 
 app = Flask(__name__)
 db = SQLAlchemy()
