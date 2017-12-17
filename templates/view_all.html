@@ -142,7 +142,7 @@ var expanded_row = false;
 
 var article_table;
 
-d3.json("static/output.json", function(error, data) {
+d3.json("{{json|string|safe}}", function(error, data) {
   all_data = data;
   
   /* store communities of interest and credibility types in lists. The values

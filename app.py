@@ -1,4 +1,6 @@
-from flask import Flask, render_template, request, url_for, send_from_directory, redirect
+#!/usr/bin/env python
+
+from flask import Flask, render_template, request, url_for, send_from_directory, redirect, session
 from flask_sqlalchemy import SQLAlchemy
 import json
 import sys
@@ -7,6 +9,9 @@ from collections import OrderedDict
 import datetime 
 import os
 import logging
+import uuid
+import glob
+import shutil
 from credibility_toolkit import parse_url
 
 app = Flask(__name__)
@@ -30,7 +35,11 @@ def home():
 
 @app.route("/credibilitytoolkit")
 def credibility():
-	return render_template('view_all.html', json="static/output.json")
+  if 'tmpfile' not in session or not os.path.isfile(session['tmpfile']):
+      session['tmpfile'] = os.path.join("static", "tmp-" + str(uuid.uuid4()))
+      shutil.copy2(os.path.join("static", "output.json"), session['tmpfile'])
+
+  return render_template('view_all.html', json=session['tmpfile'])
 
 @app.route("/visualizationtoolkit")
 def main():
@@ -65,43 +74,52 @@ def article():
   then load the json file, run the credibility toolkit on the url, and then
   append the results to the json file.
   """
-  url = False
-  if 'url' in request.form :
-    url = request.form['url']
+  if 'tmpfile' not in session or not os.path.isfile(session['tmpfile']):
+      return 'ERROR: Unable to find JSON file'
 
-    with open(os.path.join("static", "output.json"), 'r') as infile:
-      output = json.load(infile)
+  if 'url' not in request.form :
+      return 'ERROR: No URL in POST'
 
-    # check if we already have this url parsed, if so, reparse it
-    output["urls"] = filter(lambda x: x["url"] != url, output["urls"])
+  url = request.form['url']
 
+  with open(session['tmpfile'], 'r') as infile:
+    output = json.load(infile)
+
+  # check if we already have this url parsed, if so, reparse it
+  output["urls"] = filter(lambda x: x["url"] != url, output["urls"])
+
+  try:
     parse_url(output, url)
 
-    with open(os.path.join("static", "output.json"), 'w') as outfile:
-      json.dump(output, outfile, indent=2)
+    with open(session['tmpfile'], 'w') as outfile:
+        json.dump(output, outfile, indent=2)
 
-  #return render_template('view_all.html', json="static/output.json", newurl=url)
-  return redirect("/credibilitytoolkit", code=302)
+  except Exception as inst:
+      print inst
+
+  return redirect(url_for('credibility'), code=302)
 
 @app.route("/remove", methods=['GET', 'POST'])
 def remove():
   """
   remove an article from output.json
   """
-  url = False
-  if 'url' in request.form :
-    url = request.form['url']
+  if 'tmpfile' not in session or not os.path.isfile(session['tmpfile']):
+      return 'ERROR: Unable to find JSON file'
 
-    with open(os.path.join("static", "output.json"), 'r') as infile:
+  url = request.form['url']
+
+  if len(url) > 3:
+    with open(session['tmpfile'], 'r') as infile:
       output = json.load(infile)
 
     # check if we already have this url parsed, if so, reparse it
     output["urls"] = filter(lambda x: x["url"] != url, output["urls"])
 
-    with open(os.path.join("static", "output.json"), 'w') as outfile:
+    with open(session['tmpfile'], 'w') as outfile:
       json.dump(output, outfile, indent=2)
 
-  return redirect("/credibilitytoolkit", code=302)
+  return redirect(url_for('credibility'), code=302)
 
 ### --- Define internal APIs ---
 
@@ -480,9 +498,19 @@ if __name__ == "__main__":
 		'host': creds["host"],
 		'port': creds["port"]
 	}
+
 	app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://%(user)s:%(pw)s@%(host)s:%(port)s/%(db)s' % POSTGRES
 	app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 	app.config['DEBUG'] = True
 	db = SQLAlchemy(app)
 	db.session.commit()
+
+        for tmp in glob.glob(os.path.join("static", "tmp-*")):
+            try:
+                os.remove(tmp)
+            except:
+                pass
+
+        app.secret_key = str(uuid.uuid4())
+ 
 	app.run(host='0.0.0.0', port=80, threaded=True)
