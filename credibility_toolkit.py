@@ -3,6 +3,7 @@
 import sys
 import os
 import re
+import uuid
 
 import features.Compute_all_features as Compute_all_features
 import features.feature_selector as feature_selector
@@ -134,16 +135,29 @@ def parse_url(output, url):
   #except:
   #  pass
 
+  parse_info(output, info)
+
+def parse_text(output, title, text):
+  info = OrderedDict()
+  info["url"] = str(uuid.uuid4())
+  info["source"] = "unknown"
+
+  info["title"] = title
+  info["text"] = text
+
+  parse_info(output, info)
+
+def parse_info(output, info):
   info["title"] = info["title"].strip()
   info["text"] = info["text"].strip()
+  info["source"] = info["source"].strip()
 
   if not info["title"] or not info["text"]:
-    print
-    print "WARNING: Unable to parse: ", url
+    raise ValueError("WARNING: Unable to parse: ", info["url"])
     return
 
   if len(info["text"]) < 100:
-    print "WARNING: URL text too short: ", url
+    raise ValueError("WARNING: URL text too short: ", info["url"])
     return
 
   print

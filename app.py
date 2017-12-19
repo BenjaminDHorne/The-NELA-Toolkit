@@ -12,7 +12,7 @@ import logging
 import uuid
 import glob
 import shutil
-from credibility_toolkit import parse_url
+from credibility_toolkit import parse_url, parse_text
 
 app = Flask(__name__)
 db = SQLAlchemy()
@@ -39,7 +39,7 @@ def credibility():
       session['tmpfile'] = os.path.join("static", "tmp-" + str(uuid.uuid4()))
       shutil.copy2(os.path.join("static", "output.json"), session['tmpfile'])
 
-  return render_template('view_all.html', json=session['tmpfile'])
+  return render_template('credibility.html', json=session['tmpfile'])
 
 @app.route("/visualizationtoolkit")
 def main():
@@ -66,6 +66,14 @@ def features():
 	return render_template('features.html')
 
 # --- Credibility toolkit internal APIs
+
+def send_error(text):
+    return """
+    <html><body><script>
+    alert("%s");
+    location.replace("%s");
+    </script></body></html>
+    """ % (text, url_for('credibility'))
 
 @app.route("/article", methods=['GET', 'POST'])
 def article():
@@ -95,7 +103,40 @@ def article():
         json.dump(output, outfile, indent=2)
 
   except Exception as inst:
-      print inst
+      return send_error(inst)
+
+  return redirect(url_for('credibility'), code=302)
+
+@app.route("/manual", methods=['GET', 'POST'])
+def manual():
+  """
+  when the user wants to add an article, this function will get called. We will
+  then load the json file, run the credibility toolkit on the url, and then
+  append the results to the json file.
+  """
+  if 'tmpfile' not in session or not os.path.isfile(session['tmpfile']):
+    return send_error('ERROR: Unable to find JSON file')
+
+  if 'manual_entry_title' not in request.form :
+    return send_error('ERROR: Empty Title')
+
+  if 'manual_entry_text' not in request.form :
+    return send_error('ERROR: Empty Text')
+
+  title = request.form['manual_entry_title']
+  text = request.form['manual_entry_text']
+
+  with open(session['tmpfile'], 'r') as infile:
+    output = json.load(infile)
+
+  try:
+    parse_text(output, title, text)
+
+    with open(session['tmpfile'], 'w') as outfile:
+        json.dump(output, outfile, indent=2)
+
+  except Exception as inst:
+      return send_error(inst)
 
   return redirect(url_for('credibility'), code=302)
 
@@ -105,7 +146,7 @@ def remove():
   remove an article from output.json
   """
   if 'tmpfile' not in session or not os.path.isfile(session['tmpfile']):
-      return 'ERROR: Unable to find JSON file'
+    return send_error('ERROR: Unable to find JSON file')
 
   url = request.form['url']
 
@@ -476,6 +517,20 @@ def formatCount(num):
 		newRepr = float(num/1000)
 		newRepr = str(format(newRepr, '.1f')) + "k"
 		return newRepr
+
+@app.route('/js/<path:path>')
+def send_js(path):
+  """
+  expose the js directory so we don't have to have everything in static
+  """
+  return send_from_directory('static/js', path)
+
+@app.route('/css/<path:path>')
+def send_css(path):
+  """
+  expose the css directory so we don't have to have everything in static
+  """
+  return send_from_directory('static/css', path)
 
 if __name__ == "__main__":
 	credsFile = "../dbCredentials.json"
