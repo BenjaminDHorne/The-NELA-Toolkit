@@ -17,19 +17,20 @@ div.source_table {
     padding: 10px;
 }
 </style>
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'jquery-ui.css') }}">
-<script type="text/javascript" src="{{ url_for('static', filename = 'js/jquery-1.12.4.js') }}"></script>
-<script type="text/javascript" src="{{ url_for('static', filename = 'js/jquery-ui.js') }}"></script>
-
-</head>
-<body>
-<script type="text/javascript" src="{{ url_for('static', filename = 'js/d3.v3.min.js') }}"></script>
+<link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
+<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui.js"></script>
+<script type="text/javascript" src="js/d3.v3.min.js"></script>
 <!-- Added files -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'index.css') }}"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/bootstrap-select.min.js"></script>
+
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/bootstrap-select.min.css">
+<link rel="stylesheet" type="text/css" href="css/index.css"></script>
+</head>
+
+<body>
 
 <!-- Added navbar -->
 <nav class="navbar navbar-inverse navbar-fixed-top" style="z-index: 3"> 
@@ -44,10 +45,17 @@ div.source_table {
   </ul>
 </nav>
 
-<div class="url"  style="margin-top: 50px">
+
+<!-- Add New Entries Form -->
+
+<div id="panelContainer" style="margin-top: 70px; margin-left:10px">
+<div class='panel panel-default' style="width:800px;">
+<div class="panel-heading" style="font-weight:bold; font-size:larger"> <center> Add New Entries </center> </div>
+<div class="panel-body">
+
 <form action="/article" method="POST">
-<!-- <h1>Credibility Toolkit</h1> -->
-  <input name="url" list="urls" style="width:91%; margin-top: 25px">
+  <label>URL:</label>
+  <input name="url" list="urls" style="width:80%">
   <datalist id="urls">
     <option value="http://www.npr.org/sections/thetwo-way/2016/12/10/505103338/in-reversal-gambian-president-rejects-loss-and-calls-for-new-election">
     <option value="http://www.nytimes.com/2017/06/23/us/politics/paul-manafort-jeffrey-yohai.html">
@@ -58,8 +66,41 @@ div.source_table {
     <option value="https://www.washingtonpost.com/powerpost/senate-gop-leaders-set-to-unveil-health-care-bill/2017/06/22/56dbe35c-5734-11e7-a204-ad706461fa4f_story.html?utm_term=.b
 3b85da9a1f7">
   </datalist>
-  <input type="submit" class="value="Add Page" style="width:7%">
+  <input type="submit">
 </form>
+
+<br>
+<form action="/manual" method="POST">
+  <label>Manual Entry:</label>
+  <input type="submit" id="manual_entry_button" value="Show">
+  <div id="manual_entry">
+	  <label>Title:</label><br>
+	  <textarea width="100%" rows="2" cols="80" name="manual_entry_title"></textarea><br>
+	  <label>Text:</label><br>
+	  <textarea width="100%" rows="20" cols="80" name="manual_entry_text"></textarea><br>
+	  <input type="submit">
+  </div>
+  <form>
+</form>
+
+<script>
+$( "#manual_entry" ).hide()
+$( "#manual_entry_button" ).click(function( event ) {
+  event.preventDefault();
+  if ($("#manual_entry").is(":visible")) {
+    $( "#manual_entry" ).hide();
+    $( "#manual_entry_button" ).val("Show");
+  } else {
+    $( "#manual_entry" ).show();
+    $( "#manual_entry_button" ).val("Hide");
+  }
+});
+</script>
+
+</form>
+
+</div>
+</div>
 </div>
 
 <!-- Objectivity Sliders -->
