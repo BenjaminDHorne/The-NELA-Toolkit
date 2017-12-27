@@ -15,9 +15,46 @@ import shutil
 from credibility_toolkit import parse_url, parse_text
 
 app = Flask(__name__)
-db = SQLAlchemy()
 monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 badCollectionData = {}
+
+
+##### main stuf that needs to be outside the main when served by gunicorn and nginx. main is not ran unless called with python
+credsFile = "../dbCredentials.json"
+jsonCreds = ""
+try:
+	jsonCreds = open(credsFile)
+except:
+	sys.stderr.write("Error: Invalid database credentials file\n")
+	sys.exit(1)
+
+creds = json.load(jsonCreds)
+
+bcd = open("badCollection.json")
+badCollectionData = json.load(bcd)
+
+POSTGRES = {
+	'user': creds["user"],
+	'pw': creds["passwd"],
+	'db': creds["db"],
+	'host': creds["host"],
+	'port': creds["port"]
+}
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://%(user)s:%(pw)s@%(host)s:%(port)s/%(db)s' % POSTGRES
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['DEBUG'] = True
+db = SQLAlchemy(app)
+db.session.commit()
+
+for tmp in glob.glob(os.path.join("static", "tmp-*")):
+	try:
+		os.remove(tmp)
+	except:
+		pass
+
+app.secret_key = str(uuid.uuid4())
+####################################################
 
 @app.after_request
 def add_header(response):
@@ -560,12 +597,12 @@ if __name__ == "__main__":
 	db = SQLAlchemy(app)
 	db.session.commit()
 
-        for tmp in glob.glob(os.path.join("static", "tmp-*")):
-            try:
-                os.remove(tmp)
-            except:
-                pass
+	for tmp in glob.glob(os.path.join("static", "tmp-*")):
+		try:
+			os.remove(tmp)
+		except:
+			pass
 
-        app.secret_key = str(uuid.uuid4())
+	app.secret_key = str(uuid.uuid4())
  
 	app.run(host='0.0.0.0', port=80, threaded=True)
