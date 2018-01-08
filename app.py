@@ -144,6 +144,16 @@ def article():
 
   return redirect(url_for('credibility'), code=302)
 
+@app.route("/reset")
+def reset():
+  if 'tmpfile' in session:
+    tmp = session.pop('tmpfile')
+    try:
+      os.remove(tmp)
+    except:
+      pass
+  return redirect(url_for('credibility'), code=302)
+
 @app.route("/manual", methods=['GET', 'POST'])
 def manual():
   """

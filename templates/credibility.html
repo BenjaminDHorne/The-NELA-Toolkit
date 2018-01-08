@@ -93,7 +93,16 @@ $( "#manual_entry_button" ).click(function( event ) {
 });
 </script>
 
-</form>
+<br>
+<input type="button" onclick="reset_all_data()" value="Reset All Entries"></input>
+<script>
+function reset_all_data() {
+  var answer = confirm("Reset all data?");
+  if (answer) {
+     window.location.href='/reset'
+  }
+}
+</script>
 
 </div>
 </div>
@@ -145,9 +154,7 @@ $( "#manual_entry_button" ).click(function( event ) {
 </div>
 </div>
 </div>
-<p>
 
-</div>
 <p>
 
 <div id="article_table" width="100%"></div>
