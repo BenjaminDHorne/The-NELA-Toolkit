@@ -10,7 +10,7 @@ DIRNAME = os.path.dirname(__file__)
 
 def community_fitler(featurepath):
     print "Predicting community interests"
-    styles = ["r/conspiracy", "r/esist", "r/new_right"]
+    styles = ["Probability r/conspiracy interested", "Probability r/esist interested", "Probability r/new_right interested"]
     models_to_load = ["newsVSconsp", "newsVSesist", "newsVSnewright"]
     all_results = []
     for model in models_to_load:
