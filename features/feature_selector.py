@@ -48,15 +48,15 @@ def feature_select(path):
         if features_for_newsVSesist == 'all':
             feats_to_keep_esist = feat_names
         else:
-            feats_to_keep_wn = [f for f in feat_names if f in features_for_newsVSesist]
-        ind_to_keep_esist = [feat_names.index(fk) for fk in feats_to_keep_wn]
+            feats_to_keep_esist = [f for f in feat_names if f in features_for_newsVSesist]
+        ind_to_keep_esist = [feat_names.index(fk) for fk in feats_to_keep_esist]
 
         # new_right
         if features_for_newsVSnewright == 'all':
             feats_to_keep_newright = feat_names
         else:
-            feats_to_keep_wn = [f for f in feat_names if f in features_for_newsVSnewright]
-        ind_to_keep_right = [feat_names.index(fk) for fk in feats_to_keep_wn]
+            feats_to_keep_newright = [f for f in feat_names if f in features_for_newsVSnewright]
+        ind_to_keep_newright = [feat_names.index(fk) for fk in feats_to_keep_newright]
 
         #bias
         if features_for_bias == 'all':
