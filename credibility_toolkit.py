@@ -4,6 +4,8 @@ import sys
 import os
 import re
 import uuid
+import time
+from threading import Thread, Lock
 
 import features.Compute_all_features as Compute_all_features
 import features.feature_selector as feature_selector
@@ -96,7 +98,13 @@ urls = [
   "https://www.nytimes.com/2017/10/25/us/politics/alexander-murray-congressional-budget-office-deficit-savings.html?rref=collection%2Fsectioncollection%2Fpolitics&action=click&contentCollection=politics&region=stream&module=stream_unit&version=latest&contentPlacement=2&pgtype=sectionfront"
 ]
 
-def add_classifier(info, name, result):
+lock = Lock()
+
+def add_classifier(info, name, func, *args):
+  result = func(*args)
+
+  lock.acquire()
+
   if "classifiers" not in info:
     info["classifiers"] = []
     info["cindex"] = OrderedDict()
@@ -107,6 +115,8 @@ def add_classifier(info, name, result):
     "name":name,
     "result":result
   })
+
+  lock.release()
 
 def parse_url(output, url):
   info = OrderedDict()
@@ -165,18 +175,39 @@ def parse_info(output, info):
   print info["title"]
   print info["source"]
 
+  start_time = time.time()
+
   #feature creation and selection
   Compute_all_features.start(info["title"], info["text"], info["source"], featurepath)
   feature_selector.feature_select(featurepath)
 
   #classifiers
-  add_classifier(info, "fake_filter", fake_filter.fake_fitler(featurepath))
-  add_classifier(info, "bias_filter", bias_filter.bias_fitler(featurepath))
-  add_classifier(info, "community_filter", community_filter.community_fitler(featurepath))
-  add_classifier(info, "subjectivity_classifier", subjectivity_classifier.subjectivity(info["title"], info["text"]))
+
+  if True: # Set to true for threading, false otherwise
+    threads = []
+    threads.append(Thread(target=add_classifier, args=(info, "fake_filter", fake_filter.fake_fitler, featurepath,)))
+    threads.append(Thread(target=add_classifier, args=(info, "bias_filter", bias_filter.bias_fitler, featurepath,)))
+    threads.append(Thread(target=add_classifier, args=(info, "community_filter", community_filter.community_fitler, featurepath,)))
+    threads.append(Thread(target=add_classifier, args=(info, "subjectivity_classifier", subjectivity_classifier.subjectivity, info["title"], info["text"],)))
+
+    for t in threads:
+      t.daemon = True
+      t.start()
+
+    for t in threads:
+      t.join()
+
+  else:
+    add_classifier(info, "fake_filter", fake_filter.fake_fitler, featurepath)
+    add_classifier(info, "bias_filter", bias_filter.bias_fitler, featurepath)
+    add_classifier(info, "community_filter", community_filter.community_fitler, featurepath)
+    add_classifier(info, "subjectivity_classifier", subjectivity_classifier.subjectivity, info["title"], info["text"])
 
   for val in info["classifiers"]:
     print val["name"], ":", val["result"]
+
+  print "Parsing took %.4f seconds" % (time.time() - start_time)
+  print
 
   output["urls"].append(info)
 
@@ -207,19 +238,6 @@ def source_test():
 if __name__ == "__main__":
   output = OrderedDict()
   json_filename = os.path.join("web", "static", "output.json")
-
-  if len(sys.argv) > 1 and sys.argv[1] == "--nobulk":
-    sys.argv.pop(1)
-    if not os.path.isfile(json_filename):
-      print "ERROR: Unable to find", json_filename
-      exit(1)
-
-    with open(json_filename, 'r') as infile:
-      output["bulk_source_tests"] = json.load(infile)["bulk_source_tests"]
-
-  else:
-    source_results = source_test()
-    output["bulk_source_tests"] = source_results
 
   if len(sys.argv) > 1 and os.path.isfile(sys.argv[1]):
     with open(sys.argv[1], 'r') as f:
