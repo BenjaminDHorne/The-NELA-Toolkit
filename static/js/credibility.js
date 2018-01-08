@@ -288,6 +288,30 @@ function clear_row() {
   expanded_row = false;
 }
 
+function chartAnalysis(div, id, title, data) {
+  div.append("div")
+     .attr("height", "100")
+     .attr("id", id)
+
+  /* Data Example:
+   * [
+   * ['Task', 'Hours per Day'],
+   * ['Work',     11],
+   * ['Eat',      2],
+   * ['Commute',  2],
+   * ['Watch TV', 2],
+   * ['Sleep',    7]
+   * ]
+   */
+
+  var dataPoints = [['Type', 'Percentage']];
+  data.forEach(function (a) {
+    dataPoints.push([a[0], parseFloat(a[1])]);
+  });
+
+  createPieChart(id, title, dataPoints)
+}
+
 function expand_row(d, i) {
   parent = d3.select(this.parentNode);
   parent.selectAll("#details-row").remove();
@@ -319,46 +343,28 @@ function expand_row(d, i) {
               .style("border-style", "outset")
               .style("border-width", 1)
 
-  div.append("a")
-     .attr("href", url)
-     .text(url)
-  div.append("p")
-
-  /* Fake Filter Results */
-  div.append("h3")
-     .text("Credibility Filter:")
-  get_credibility_filter_result(info).forEach(function (a) {
-    div.append("font")
-       .text(a[0] + ": " + a[1])
-    div.append("br")
-  });
-  div.append("p")
+  /* Credibility Results */
+  chartAnalysis(div, "cred_div", "Credibility Analysis", get_credibility_filter_result(info));
 
   /* Impartiality Filter Results */
-  div.append("h3")
-     .text("Political Impartiality Filter:")
-  get_bias_filter_result(info).forEach(function (a) {
-    div.append("font")
-       .text(a[0] + ": " + a[1])
-    div.append("br")
-  });
-  div.append("p")
+  chartAnalysis(div, "polit_div", "Political Impartiality", get_bias_filter_result(info));
 
   /* Community Filter Results */
-  div.append("h3")
-     .text("Community Rating Filter:")
-  get_community_filter_result(info).forEach(function (a) {
-    div.append("font")
-       .text(a[0] + ": " + a[1])
-    div.append("br")
-  });
-  div.append("p")
+  chartAnalysis(div, "comm_div", "Community Ratings", get_community_filter_result(info));
 
   /* Article Text */
   div.append("h3")
      .text("Article Text:")
   div.append("font")
      .text(info.text)
+  div.append("p")
+
+  /* Article URL */
+  div.append("h3")
+     .text("Article URL:")
+  div.append("a")
+     .attr("href", url)
+     .text(url)
   div.append("p")
 
   /* Remove Entry Button */
