@@ -10,30 +10,28 @@ DIRNAME = os.path.dirname(__file__)
 
 def community_fitler(featurepath):
     print "Predicting community interests"
-    with open(os.path.join(featurepath, "newsVSconsp_features.csv")) as data:
-        data.readline()
-        x_test = data.readline().strip().split(",")
+    styles = ["r/conspiracy", "r/esist", "r/new_right"]
+    models_to_load = ["newsVSconsp", "newsVSesist", "newsVSnewright"]
+    all_results = []
+    for model in models_to_load:
+        with open(os.path.join(featurepath, model+"_features.csv")) as data:
+            data.readline()
+            x_test = data.readline().strip().split(",")
 
-    X_test = []
-    x_test = tuple([float(x) for x in x_test])
-    x_test = np.array(x_test).reshape(1, -1)
-    #X_test.append(x_test)
-    #X_test = preprocessing.normalize(X_test)
-    #x_test = preprocessing.scale(x_test)
+        x_test = tuple([float(x) for x in x_test])
+        x_test = np.array(x_test).reshape(1, -1)
 
-    # load the model from disk
-    loaded_model = pickle.load(open(os.path.join(DIRNAME, 'resources', 'newsVSconsp.sav'), 'rb'))
-    #print "PREDICT", loaded_model.predict(x_test)
+        # load the model from disk
+        loaded_model = pickle.load(open(os.path.join(DIRNAME, 'resources', model+'.sav'), 'rb'))
 
-    styles = ["Conspiracy community interest", "General news interest"]
-    result = loaded_model.predict_proba(x_test)[0]
-    #print loaded_model.classes_
+        result = loaded_model.predict_proba(x_test)[0][0]
+        #print loaded_model.classes_
+        all_results.append(result)
 
     # combine results with writing styles list
-    result = [(styles[i], x) for i,x in enumerate(result)]
+    all_results = [(styles[i], x) for i,x in enumerate(all_results)]
 
-    # sort the results such that the first item in the list is the most likely
-    # possibility
-    result = sorted(result, key=lambda x: x[1], reverse=True)
+    # sort the results such that the first item in the list is the most likely possibility
+    #result = sorted(result, key=lambda x: x[1], reverse=True)
 
-    return result
+    return all_results
