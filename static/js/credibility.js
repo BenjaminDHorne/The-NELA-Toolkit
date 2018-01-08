@@ -283,11 +283,16 @@ function clear_expanded_row() {
   expanded_row = false;
 }
 
+function clear_row() {
+  d3.selectAll("#details-row").remove();
+  expanded_row = false;
+}
+
 function expand_row(d, i) {
   parent = d3.select(this.parentNode);
   parent.selectAll("#details-row").remove();
 
-  url = d[d.length-1].attrs.href;
+  var url = d[d.length-1].attrs.href;
   if (expanded_row == url) {
     expanded_row = false;
     return;
@@ -296,7 +301,7 @@ function expand_row(d, i) {
   expanded_row = url;
 
   /* Find our data */
-  info = false
+  var info = false
   all_data.some(function (d) {
     if (d.url == url) {
       info = d;
@@ -305,7 +310,7 @@ function expand_row(d, i) {
     return false;
   })
 
-  div = parent.insert("tr", "#info-row-" + i + "+*")
+  var div = parent.insert("tr", "#info-row-" + i + "+*")
               .attr("id", "details-row")
               .append("td")
               .attr("colspan", d.length)
@@ -314,7 +319,8 @@ function expand_row(d, i) {
               .style("border-style", "outset")
               .style("border-width", 1)
 
-  div.append("font")
+  div.append("a")
+     .attr("href", url)
      .text(url)
   div.append("p")
 
@@ -356,15 +362,25 @@ function expand_row(d, i) {
   div.append("p")
 
   /* Remove Entry Button */
-  div.append("form")
+  var tr = div.append("table")
+              .append("tbody").append("tr");
+
+  tr.append("td").append("form")
      .attr("action", "/remove")
      .attr("method", "POST")
      .append("button")
        .attr("type", "submit")
        .attr("name", "url")
        .attr("value", url)
-       .text("Remove Entry")
-  div.append("p")
+       .text("Remove Entry");
+
+  /* Remove Entry Button */
+  tr.append("td").append("input")
+     .attr("type", "button")
+     .attr("onclick", "clear_row()")
+     .attr("value", "Hide");
+
+  div.append("p");
 }
   
 function get_perc_str(value) {
