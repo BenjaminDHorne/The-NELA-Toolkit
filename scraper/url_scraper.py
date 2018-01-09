@@ -22,7 +22,6 @@ def scrape(url):
          return "Unexpected error when scraping", sys.exc_info()[0]
     text = fix(article.cleaned_text)
     title = fix(article.title)
-    print title
     domain = tldextract.extract(url)[1]
 
     return title, text, domain

@@ -237,7 +237,7 @@ def source_test():
 # Main
 if __name__ == "__main__":
   output = OrderedDict()
-  json_filename = os.path.join("web", "static", "output.json")
+  json_filename = os.path.join("static", "output.json")
 
   if len(sys.argv) > 1 and os.path.isfile(sys.argv[1]):
     with open(sys.argv[1], 'r') as f:
@@ -248,7 +248,10 @@ if __name__ == "__main__":
   output["urls"] = []
 
   for url in urls:
-    parse_url(output, url)
+    try:
+      parse_url(output, url)
+    except Exception as e:
+      print e
 
   with open(json_filename, 'w') as outfile:
     json.dump(output, outfile, indent=2)
