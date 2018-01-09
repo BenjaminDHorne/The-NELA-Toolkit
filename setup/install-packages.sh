@@ -9,7 +9,8 @@ which sudo &> /dev/null && do_sudo="sudo"
 # Install the following packages on Ubuntu:
 python -mplatform | grep -q Ubuntu
 if [ $? -eq 0 ]; then
-  sudo apt-get install libblas-dev liblapack-dev gfortran python-pil python-qt4
+  $do_sudo apt-get remove python-numpy python-scipy
+  $do_sudo apt-get install libblas-dev liblapack-dev gfortran python-pil python-qt4
 fi
 
 $do_sudo pip install flask nltk textblob goose-extractor tldextract || exit 1
