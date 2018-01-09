@@ -262,20 +262,35 @@ function sort_table_column(sort_index) {
   setup_article_table();
 }
 
+function get_filter_result(d, name) {
+  return d.classifiers[d.cindex[name]].result;
+}
+
 function get_credibility_filter_result(d) {
-  return d.classifiers[0].result;
+  return get_filter_result(d, "fake_filter");
 }
 
 function get_bias_filter_result(d) {
-  return d.classifiers[1].result;
+  return get_filter_result(d, "bias_filter");
 }
 
 function get_community_filter_result(d) {
-  return d.classifiers[2].result;
+  return get_filter_result(d, "community_filter");
+}
+
+function get_general_community_rating(d) {
+  var ret = 0.0;
+
+  var result = get_community_filter_result(d);
+  for (i in result) {
+    ret = Math.max(parseFloat(result[i][1]), ret);
+  }
+
+  return 1 - ret;
 }
 
 function get_subjectivity_result(d) {
-  return d.classifiers[3].result;
+  return get_filter_result(d, "subjectivity_classifier");
 }
 
 function clear_expanded_row() {
@@ -304,12 +319,19 @@ function chartAnalysis(div, id, title, data) {
    * ]
    */
 
-  var dataPoints = [['Type', 'Percentage']];
+  var dataPoints = [['Type', 'Percentage', {role:'annotation'}]];
   data.forEach(function (a) {
-    dataPoints.push([a[0], parseFloat(a[1])]);
+    dataPoints.push([a[0], parseFloat(a[1]), a[1]]);
   });
 
-  createPieChart(id, title, dataPoints)
+  var type = "Pie";
+  var options = {};
+  if (data.length > 2) {
+    type = "Bar";
+    options['hAxis'] = {minValue:0, maxValue:1};
+  }
+
+  drawChart(type, id, title, dataPoints, options);
 }
 
 function expand_row(d, i) {
@@ -440,7 +462,8 @@ function setup_article_table() {
     }
 
     /* Community filters */
-    community = get_community_filter_result(d)[0][1];
+    //community = 1 - parseFloat(get_community_filter_result(d)[0][1])
+    community = get_general_community_rating(d);
     if (community * 100 < show_community[0] || community * 100 > show_community[1]) {
       return false;
     }
@@ -479,7 +502,8 @@ function setup_article_table() {
     entry.push(color_result(subj[1]));
 
     /* Community Filter */
-    community = parseFloat(get_community_filter_result(d)[0][1])
+    //community = 1 - parseFloat(get_community_filter_result(d)[0][1])
+    community = get_general_community_rating(d);
     entry.push(color_result(community));
 
     /* Link to article */
@@ -489,23 +513,24 @@ function setup_article_table() {
   });
 
   table_values.sort(function(a, b) {
-    a_val = parseInt(a[sort_value]);
-    b_val = parseInt(b[sort_value]);
-
-    if (isNaN(a_val) || isNaN(b_val)) {
-      a_val = a[sort_value];
-      b_val = b[sort_value];
-    }
-
-    if (typeof a_val === 'object') {
+    var a_val = a[sort_value];
+    var b_val = b[sort_value];
+    if (typeof(a_val) === 'object') {
       a_val = a_val.text;
     }
-
-    if (typeof b_val === 'object') {
+    if (typeof(b_val) === 'object') {
       b_val = b_val.text;
     }
 
-    ret = 0;
+    var a_num = parseFloat(a_val);
+    var b_num = parseFloat(b_val);
+
+    if (!isNaN(a_num) && !isNaN(b_num)) {
+      a_val = a_num;
+      b_val = b_num;
+    }
+
+    var ret = 0;
     if (a_val < b_val) {
       ret = -1;
     }
