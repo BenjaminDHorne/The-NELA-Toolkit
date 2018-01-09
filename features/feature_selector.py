@@ -7,7 +7,7 @@ DEFAULT_PATH = os.path.dirname(__file__)
 
 def load_features_selected(name):
     with open(os.path.join(DEFAULT_PATH, "resources", "features_selected_"+name+".csv")) as data:
-        return data.readline().strip().split(",")
+        return [d.replace(" ", "") for d in data.readline().strip().split(",")]
 
 def load_top_features(communities):
     top = []
@@ -39,10 +39,10 @@ def feature_select(path):
 
         #news
         if features_for_newsVSconsp == 'all':
-            feats_to_keep_wn = feat_names
+            feats_to_keep_consp = feat_names
         else:
-            feats_to_keep_wn = [f for f in feat_names if f in features_for_newsVSconsp]
-        ind_to_keep_wn = [feat_names.index(fk) for fk in feats_to_keep_wn]
+            feats_to_keep_consp = [f for f in feat_names if f in features_for_newsVSconsp]
+        ind_to_keep_consp = [feat_names.index(fk) for fk in feats_to_keep_consp]
 
         # esist
         if features_for_newsVSesist == 'all':
@@ -67,7 +67,7 @@ def feature_select(path):
 
         for line in allfeats:
             line_to_keep_fake = []
-            line_to_keep_wn = []
+            line_to_keep_consp = []
             line_to_keep_bias = []
             line_to_keep_esist = []
             line_to_keep_newright = []
@@ -75,8 +75,8 @@ def feature_select(path):
             for i in xrange(len(line)):
                 if i in ind_to_keep_fake:
                     line_to_keep_fake.append(line[i])
-                if i in ind_to_keep_wn:
-                     line_to_keep_wn.append(line[i])
+                if i in ind_to_keep_consp:
+                     line_to_keep_consp.append(line[i])
                 if i in ind_to_keep_esist:
                      line_to_keep_esist.append(line[i])
                 if i in ind_to_keep_newright:
@@ -87,8 +87,8 @@ def feature_select(path):
                 out.write(",".join(feats_to_keep_fake)+"\n")
                 out.write(",".join(line_to_keep_fake)+"\n")
             with open(os.path.join(path, "newsVSconsp_features.csv"), "w") as out:
-                 out.write(",".join(feats_to_keep_wn)+"\n")
-                 out.write(",".join(line_to_keep_wn)+"\n")
+                 out.write(",".join(feats_to_keep_consp)+"\n")
+                 out.write(",".join(line_to_keep_consp)+"\n")
             with open(os.path.join(path, "bias_features.csv"), "w") as out:
                 out.write(",".join(feats_to_keep_bias)+"\n")
                 out.write(",".join(line_to_keep_bias)+"\n")
