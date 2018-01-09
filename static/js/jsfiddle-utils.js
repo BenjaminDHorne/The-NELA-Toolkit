@@ -1,26 +1,21 @@
-function createPieChart(element, title, data) {
+function drawChart(type, element, title, data, options) {
       google.charts.load('current', {'packages':['corechart']});
-      google.charts.setOnLoadCallback(drawChart);
+      google.charts.setOnLoadCallback(chartCallback);
 
-      function drawChart() {
-	/* Data Example:
-	 * [
-	 * ['Task', 'Hours per Day'],
-	 * ['Work',     11],
-	 * ['Eat',      2],
-	 * ['Commute',  2],
-	 * ['Watch TV', 2],
-	 * ['Sleep',    7]
-	 * ]
-	 */
-
+      function chartCallback() {
         var dataTable = google.visualization.arrayToDataTable(data);
 
-        var options = {
-          title: title
-        };
+        options["title"] = title;
+        options["chartArea"] = {width: '50%'};
 
-        var chart = new google.visualization.PieChart(document.getElementById(element));
+        if (type == "Pie") {
+          type = google.visualization.PieChart;
+        }
+        else if (type == "Bar") {
+          type = google.visualization.BarChart;
+        }
+
+        var chart = new type(document.getElementById(element));
 
         chart.draw(dataTable, options);
       }
