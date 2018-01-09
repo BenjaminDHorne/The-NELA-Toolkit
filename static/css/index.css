@@ -86,9 +86,10 @@
 #credToolkitButton {
 	position: absolute;
 	top: 60%;
-	left: 34%;
-	width: 15%;
+	left: 30%;
+	width: 19%;
 	font-size: 1.2vw;
+	font-weight: bold;
 	z-index: 2;
 }
 
@@ -96,8 +97,9 @@
 	position: absolute;
 	top: 60%;
 	left: 51%;
-	width: 15%;
+	width: 19%;
 	font-size: 1.2vw;
+	font-weight: bold;
 	z-index: 2;
 }
 
