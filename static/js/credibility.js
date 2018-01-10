@@ -396,7 +396,6 @@ function expand_row(d, i) {
   chartAnalysis(div, "cred_bias_div", "Writing Style Analysis", results);
 
   /* Community Filter Results */
-  console.log(get_community_filter_result(info));
   chartAnalysis(div, "comm_div", "Community Ratings", get_community_filter_result(info));
 
   /* Article Text */
