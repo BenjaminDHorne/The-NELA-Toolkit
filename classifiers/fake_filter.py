@@ -25,7 +25,7 @@ def fake_fitler(featurepath):
     loaded_model = pickle.load(open(os.path.join(DIRNAME, 'resources', 'FAKE_FILTER_MODEL.sav'), 'rb'))
     #print "PREDICT", loaded_model.predict(x_test)
 
-    styles = ["Not Credibile Writing Style", "Credible Writing Style"]
+    styles = ["Unreliable Writing Style", "Reliable Writing Style"]
     result = loaded_model.predict_proba(x_test)[0]
     #print loaded_model.classes_
 
