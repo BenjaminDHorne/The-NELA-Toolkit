@@ -15,12 +15,12 @@ function init_table_data(json_file, filters, sources) {
 
   oncolor="#11CC11";
   offcolor="#AAAAAA";
-  show_credibility = [0.0, 100.0]; // min, max
+  show_reliability = [0.0, 100.0]; // min, max
   show_bias = [0.0, 100.0]; // min, max
   show_subjectivity = [0.0, 100.0, 0.0, 100.0]; // min_title_subj, max_title_subj, min_text_subj, max_text_subj
   show_community = [0.0, 100.0]; // min, max
   
-  table_columns = ["Credibility", "Political Impartiality", "Title", "Source", "Title Objectivity", "Text Objectivity", "Most Interested Community", "URL"];
+  table_columns = ["Reliability", "Political Impartiality", "Title", "Source", "Title Objectivity", "Text Objectivity", "Most Interested Community", "URL"];
   
   sort_value = 3;
   sort_reverse = false;
@@ -67,22 +67,22 @@ function init_table_data(json_file, filters, sources) {
 
 function init_filters(data) {
   $( function() {
-    $( "#credibility-slider" ).slider({
+    $( "#reliability-slider" ).slider({
       range: true,
       min: 0,
       max: 100,
       values: [ 0, 100 ],
       slide: function( event, ui ) {
-        $( "#credibility-slider-vals" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
-        show_credibility[0] = ui.values[0];
-        show_credibility[1] = ui.values[1];
+        $( "#reliability-slider-vals" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+        show_reliability[0] = ui.values[0];
+        show_reliability[1] = ui.values[1];
         setup_article_table();
       }
     });
-    $( "#credibility-slider-vals" ).val( $( "#credibility-slider" ).slider( "values", 0 ) +
-      " - " + $( "#credibility-slider" ).slider( "values", 1 ) );
-    show_credibility[0] = $("#credibility-slider").slider("values", 0);
-    show_credibility[1] = $("#credibility-slider").slider("values", 1);
+    $( "#reliability-slider-vals" ).val( $( "#reliability-slider" ).slider( "values", 0 ) +
+      " - " + $( "#reliability-slider" ).slider( "values", 1 ) );
+    show_reliability[0] = $("#reliability-slider").slider("values", 0);
+    show_reliability[1] = $("#reliability-slider").slider("values", 1);
   } );
 
   $( function() {
@@ -287,7 +287,7 @@ function get_filter_result(d, name) {
   return d.classifiers[d.cindex[name]].result;
 }
 
-function get_credibility_filter_result(d) {
+function get_reliability_filter_result(d) {
   return get_filter_result(d, "fake_filter");
 }
 
@@ -387,13 +387,13 @@ function expand_row(d, i) {
               .style("border-style", "outset")
               .style("border-width", 1)
 
-  /* Credibility and Impartiality Results */
+  /* Reliability and Impartiality Results */
   var results = [];
   results.push(["Title Objectivity", get_subjectivity_result(info)[0]]);
   results.push(["Text Objectivity", get_subjectivity_result(info)[1]]);
-  results.push(get_credibility_filter_result(info)[1]);
+  results.push(get_reliability_filter_result(info)[1]);
   results.push(get_bias_filter_result(info)[1]);
-  chartAnalysis(div, "cred_bias_div", "Writing Style Analysis", results);
+  chartAnalysis(div, "writing_style_div", "Writing Style Analysis", results);
 
   /* Community Filter Results */
   chartAnalysis(div, "comm_div", "Community Ratings", get_community_filter_result(info));
@@ -465,9 +465,9 @@ function setup_article_table() {
    *     subjectivity.
    */
   var filtered_data = all_data.filter(function(d) {
-    /* Credibility filters */
-    credibility = get_credibility_filter_result(d)[1][1];
-    if (credibility * 100 < show_credibility[0] || credibility * 100 > show_credibility[1]) {
+    /* Reliability filters */
+    reliability = get_reliability_filter_result(d)[1][1];
+    if (reliability * 100 < show_reliability[0] || reliability * 100 > show_reliability[1]) {
       return false;
     }
 
@@ -520,9 +520,9 @@ function setup_article_table() {
     }
     */
 
-    /* Credibility Filter */
-    credibility = parseFloat(get_credibility_filter_result(d)[1][1])
-    entry.push(color_result(credibility));
+    /* Reliability Filter */
+    reliability = parseFloat(get_reliability_filter_result(d)[1][1])
+    entry.push(color_result(reliability));
 
     /* Impartiality Filter */
     bias = parseFloat(get_bias_filter_result(d)[1][1])
@@ -598,38 +598,4 @@ function setup_article_table() {
   fill_in_table_data(rows);
 
   rows.exit().remove();
-
-  //create_graph(table_values);
 }
-
-function create_graph(table_values) {
-  create_pie(table_values, "Credibility", ["Reliable", "Unreliable"], 0);
-}
-
-function create_pie(table_values, name, labels, index) {
-  charts = d3.select("#charts");
-  charts.selectAll("#" + name).remove();
-  charts.append("div")
-        .attr("id", name)
-        .style("width", "30%");
-
-  values = []
-  for (j in labels) {
-    values.push(0);
-  }
-
-  pie = [{values:values, labels:labels, type:'pie'}];
-  layout = {title:name, height:300, width:300};
-
-  table_values.forEach(function(a, i) {
-    for (j in pie[0].labels) {
-      if (a[index].text == pie[0].labels[j]) {
-        pie[0].values[j]++;
-      }
-    }
-  });
-
-  Plotly.newPlot(name, pie, layout);
-}
-
-
