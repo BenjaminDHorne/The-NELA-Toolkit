@@ -10,7 +10,7 @@
  *
  */
 
-function init_table_data(json_file, sources) {
+function init_table_data(json_file, filters, sources) {
   sources = sources || [];
 
   oncolor="#11CC11";
@@ -20,7 +20,7 @@ function init_table_data(json_file, sources) {
   show_subjectivity = [0.0, 100.0, 0.0, 100.0]; // min_title_subj, max_title_subj, min_text_subj, max_text_subj
   show_community = [0.0, 100.0]; // min, max
   
-  table_columns = ["Credibility", "Political Impartiality", "Title", "Source", "Title Objectivity", "Text Objectivity", "Community Rating", "URL"];
+  table_columns = ["Credibility", "Political Impartiality", "Title", "Source", "Title Objectivity", "Text Objectivity", "Most Interested Community", "URL"];
   
   sort_value = 3;
   sort_reverse = false;
@@ -56,12 +56,16 @@ function init_table_data(json_file, sources) {
                  .text(function(d) { return d; })
                  .on("click", function (d, i) { sort_table_column(i) });
 
-    setup_article_table();
-  });
+    if (filters) {
+      init_filters(all_data);
+    }
 
+    setup_article_table();
+
+  });
 }
 
-function init_sliders() {
+function init_filters(data) {
   $( function() {
     $( "#credibility-slider" ).slider({
       range: true,
@@ -138,6 +142,7 @@ function init_sliders() {
     show_subjectivity[3] = $("#title-slider").slider("values", 1);
   } );
 
+  /*
   $( function() {
     $( "#community-slider" ).slider({
       range: true,
@@ -156,6 +161,15 @@ function init_sliders() {
     show_community[0] = $("#community-slider").slider("values", 0);
     show_community[1] = $("#community-slider").slider("values", 1);
   } );
+  */
+
+  /* Grab the various community names, adding 'r/news' */
+  communities = [['r/news', true]]; /* globally declared */
+  get_community_filter_result(data[0]).forEach(function(d) {
+    communities.push([d[0].split(" ")[1], true]);
+  });
+
+  add_buttons('Community Filters', '#filters_div', communities);
 }
 
 function fill_in_table_data(rows) {
@@ -198,7 +212,7 @@ function fill_in_table_data(rows) {
   tdata.exit().remove();
 }
 
-function add_buttons(tag, values) {
+function add_buttons(title, tag, values) {
   /* add grey/green buttons at the top that let the analyst turn on/off buttons
    * of interest. When these buttons are off, the matching entries will be
    * omitted from the article table.
@@ -230,9 +244,16 @@ function add_buttons(tag, values) {
     setup_article_table();
   }
 
+  d3.select(tag).append("br");
+
+  d3.select(tag)
+    .append("label")
+    .text(title);
+
   buttons = d3.select(tag)
               .append("table")
               .attr("width", "100%")
+              .attr("border", "1")
               .append("tbody")
               .append("tr");
 
@@ -278,15 +299,20 @@ function get_community_filter_result(d) {
   return get_filter_result(d, "community_filter");
 }
 
-function get_general_community_rating(d) {
-  var ret = 0.0;
+function get_highest_community_rating(d) {
+  var test = 0.5;
+  var ret = 'r/news';
 
   var result = get_community_filter_result(d);
   for (i in result) {
-    ret = Math.max(parseFloat(result[i][1]), ret);
+    var value = parseFloat(result[i][1]);
+    if (value > test) {
+      ret = result[i][0].split(" ")[1];
+      test = value;
+    }
   }
 
-  return 1 - ret;
+  return ret;
 }
 
 function get_subjectivity_result(d) {
@@ -324,12 +350,8 @@ function chartAnalysis(div, id, title, data) {
     dataPoints.push([a[0], parseFloat(a[1]), a[1]]);
   });
 
-  var type = "Pie";
-  var options = {};
-  if (data.length > 2) {
-    type = "Bar";
-    options['hAxis'] = {minValue:0, maxValue:1};
-  }
+  var type = "Bar";
+  var options = {hAxis: {minValue:0, maxValue:1}};
 
   drawChart(type, id, title, dataPoints, options);
 }
@@ -365,11 +387,9 @@ function expand_row(d, i) {
               .style("border-style", "outset")
               .style("border-width", 1)
 
-  /* Credibility Results */
-  chartAnalysis(div, "cred_div", "Credibility Analysis", get_credibility_filter_result(info));
-
-  /* Impartiality Filter Results */
-  chartAnalysis(div, "polit_div", "Political Impartiality", get_bias_filter_result(info));
+  /* Credibility and Impartiality Results */
+  var results = [get_credibility_filter_result(info)[1], get_bias_filter_result(info)[1]];
+  chartAnalysis(div, "cred_bias_div", "Writing Style Analysis", results);
 
   /* Community Filter Results */
   chartAnalysis(div, "comm_div", "Community Ratings", get_community_filter_result(info));
@@ -463,8 +483,22 @@ function setup_article_table() {
 
     /* Community filters */
     //community = 1 - parseFloat(get_community_filter_result(d)[0][1])
-    community = get_general_community_rating(d);
-    if (community * 100 < show_community[0] || community * 100 > show_community[1]) {
+    //if (community * 100 < show_community[0] || community * 100 > show_community[1]) {
+    //  return false;
+    //}
+    var community = get_highest_community_rating(d);
+    var test = true;
+
+    /* look at the communities buttons and see if this one is on/off */
+    communities.some(function(d) {
+      if (d[0] == community) {
+        test = d[1];
+        return true;
+      }
+      return false;
+    });
+
+    if (!test) {
       return false;
     }
 
@@ -503,8 +537,9 @@ function setup_article_table() {
 
     /* Community Filter */
     //community = 1 - parseFloat(get_community_filter_result(d)[0][1])
-    community = get_general_community_rating(d);
-    entry.push(color_result(community));
+    //entry.push(color_result(community));
+    community = get_highest_community_rating(d);
+    entry.push(community);
 
     /* Link to article */
     entry.push({type:"a", attrs:{href:d.url, target:"_blank"}, text:'Link'});
