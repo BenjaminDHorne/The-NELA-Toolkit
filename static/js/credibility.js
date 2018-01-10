@@ -345,7 +345,7 @@ function chartAnalysis(div, id, title, data) {
    * ]
    */
 
-  var dataPoints = [['Type', 'Percentage', {role:'annotation'}]];
+  var dataPoints = [['Type', 'Probability', {role:'annotation'}]];
   data.forEach(function (a) {
     dataPoints.push([a[0], parseFloat(a[1]), a[1]]);
   });
