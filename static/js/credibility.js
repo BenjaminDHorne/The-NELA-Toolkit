@@ -252,15 +252,17 @@ function add_buttons(title, tag, values) {
 
   buttons = d3.select(tag)
               .append("table")
-              .attr("width", "100%")
-              .attr("border", "1")
+              .style("width", "100%")
+              .style("padding", "20px")
               .append("tbody")
-              .append("tr");
+              .append("tr")
 
   buttons.selectAll("td")
          .data(values)
          .enter()
            .append("td")
+           .style("border", "3px solid #FFFFFF")
+           .style("border-radius", "50px")
            .attr("id", function(d) { return "button-" + d[0]; })
            .attr("bgcolor", function(d) { return d[1] ? oncolor : offcolor; })
            .on("click", click_buttons)
