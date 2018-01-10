@@ -388,10 +388,15 @@ function expand_row(d, i) {
               .style("border-width", 1)
 
   /* Credibility and Impartiality Results */
-  var results = [get_credibility_filter_result(info)[1], get_bias_filter_result(info)[1]];
+  var results = [];
+  results.push(["Title Objectivity", get_subjectivity_result(info)[0]]);
+  results.push(["Text Objectivity", get_subjectivity_result(info)[1]]);
+  results.push(get_credibility_filter_result(info)[1]);
+  results.push(get_bias_filter_result(info)[1]);
   chartAnalysis(div, "cred_bias_div", "Writing Style Analysis", results);
 
   /* Community Filter Results */
+  console.log(get_community_filter_result(info));
   chartAnalysis(div, "comm_div", "Community Ratings", get_community_filter_result(info));
 
   /* Article Text */
