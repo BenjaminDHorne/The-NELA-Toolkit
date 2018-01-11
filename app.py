@@ -613,6 +613,6 @@ if __name__ == "__main__":
 		except:
 			pass
 
-	app.secret_key = str(uuid.uuid4())
+	app.secret_key = str('2e239029-814f-4ece-b99c-1f539509ca10')
  
 	app.run(host='0.0.0.0', port=80, threaded=True)
