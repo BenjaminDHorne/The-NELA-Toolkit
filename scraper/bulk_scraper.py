@@ -12,7 +12,6 @@ import re
 import pytz
 import unicodedata
 import io
-import smtplib
 
 g = Goose()
 
