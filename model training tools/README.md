@@ -1,0 +1,1 @@
+This folder contains many of the testing scripts used in building the toolkit. This code in this folder may be in a non-usable state. It is only meant to keep track of tests for new toolkit updates. These files are not needed in running the toolkit.
