@@ -1,0 +1,196 @@
+<html>
+	<head>
+	<title>Features</title>
+		<script src="js/jquery-3.2.1.min.js"></script>
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/bootstrap-select.min.js"></script>
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/index.css">
+		<link rel=icon href=static/logo/flavicon.png>
+	</head>
+</html>
+
+<body>
+<link rel="stylesheet" type="text/css" href="css/index.css">
+<nav class="navbar navbar-inverse navbar-fixed-top"> 
+	 <a href="/"><img id ="navLogo" class="navbar-brand" src="/static/logo/logo_small_trans.png"></img></a>
+	<ul class="nav navbar-nav navbar-right">
+		<li> 
+			<a href="/"> Home </a>
+		</li>
+		<li>
+			<a href="/visualizationtoolkit"> Back to News Visualizer </a>
+		</li>
+		<li>
+			<a style="padding-right:50px" href="#"> Help </a>
+		</li>
+	</ul>
+</nav>
+
+<div class="row">
+	<div class="col-sm-8">
+		<div style="margin-top:100px; margin-left:50px; border-bottom: 1px solid #e6e6e6;">
+			<h2> Features Implemented in the NELA News Source Visualizer</h2>
+		</div>
+		<div style="margin-left:85px; margin-top: 20px">
+			<p style="margin-left:5px; font-size:15px">
+			There are many features implemented in the NELA News Source Visualizer. Some of these features are correlated or represent the same notion (more general or specific), but are implemented differently. Further, some features are more useful than others. The goal of this diverse and large features set is to allow for the free exploration of the news landscape. For features from or inspired by Linguistic inquiry and word count (LIWC), <a href="">refer to this paper.</a>
+				<br><br>
+				<h4>Writing Style and Complexity Features:</h4>
+				<ul>
+				  <li>Clickbait - clickbait classification using models built in <a href="https://arxiv.org/pdf/1610.09786.pdf">Chakraborty, Abhijnan, et al. "Stop clickbait: Detecting and preventing clickbaits in online news media." ASONAM 2016</a> </li>
+				  <li>Lexical Diversity - also known as Type-Token Ratio, (# unique words)/(total words)</li>
+				  <li>SMOG Grade Readability - <a href="https://en.wikipedia.org/wiki/SMOG">Standard readability measure</a> computed by 1.0430*√(#polysyllables * 30/(#sentences))+ 3.1291</li>
+				  <li>Flesch-Kincaid Readability - <a href="https://en.wikipedia.org/wiki/Flesch%E2%80%93Kincaid_readability_tests">Standard readability measure</a> computed by 0.39*(total words/total sentences) + 11.8*(total syllables/total words) - 15.59 </li>
+				  <li>Average Word Length - average number of characters in a word</li>
+				  <li>Stop Words - number of stop words (ex. the, a, an, etc.)</li>
+				  <li>Quote Usage - number of "" used</li>
+				  <li>Exclaimation Mark Usage - number of ! used</li>
+				  <li>Punctuation Usage - number of punctuation (all punctuation marks) used</li>
+				  <li>All Capitalized Usage - number of words typed in all capitalized letters (ex. SHOCKING)</li>
+				  <li>Quantifying Words - number of words like few, many, much, using LIWC lexicon</li>
+				  <li>Swear Words - number of swear words using LIWC lexicon</li>
+				  <li>Function Words - number of function words (ex. it, to, no, very) using LIWC lexicon</li>
+				  <li>Pronoun Usage- number of pronouns (ex. I, them, itself) using LIWC lexicon</li>
+				  <li>Impersonal Pronoun Usage - number of impersonal pronouns (ex. it, it’s, those) using LIWC lexicon</li>
+				  <li>'We' Usage - number of 1st pers plural words  (ex. we, us, our) using LIWC lexicon(</li>
+				  <li>'He/she' Usage - number of 3rd pers singular words (ex. she, her, him) using LIWC lexicon</li>
+				  <li>'I' Usage - number of 1st pers singular words (ex. I, me, mine) using LIWC lexicon</li>
+				  <li>'You' Usage - number of 2nd person words (ex. you, your, thou) using LIWC lexicon</li>
+				  <li>'They' Usage - number of 3rd pers plural words (ex. they, their, they’d) using LIWC lexicon</li>
+				  <li>Filler Words - number of filler words (ex. Imean, youknow) using LIWC lexicon</li>
+				  <li>Past Tense Words - number of past tense words (ex. ago, did, talked) using LIWC lexicon</li>
+				  <li>Present Tense Words - number of present tense words (ex. today, is, now) using LIWC lexicon</li>
+				  <li>Future Tense Words - number of future tense words (ex. may, will, soon) using LIWC lexicon</li>
+				</ul>
+				<h4>Sentiment and Emotion Features:</h4>
+				<ul>
+				  <li>Vader Positive Sentiment - positive sentiment score using <a href="https://www.aaai.org/ocs/index.php/ICWSM/ICWSM14/paper/viewPaper/8109">Vader Sentiment</a></li>
+				  <li>Vader Negative Sentiment - negative sentiment score using <a href="https://www.aaai.org/ocs/index.php/ICWSM/ICWSM14/paper/viewPaper/8109">Vader Sentiment</a></li>
+				  <li>Vader Neutral Sentiment - neutral sentiment score using <a href="https://www.aaai.org/ocs/index.php/ICWSM/ICWSM14/paper/viewPaper/8109">Vader Sentiment</a></li>
+				  <li>Happiness - happiness score using <a href="http://journals.plos.org/plosone/article?id=10.1371/journal.pone.0064417">Mitchell et al. 2013 Happiness lexicon</a></li>
+				  <li>Strong Positive - number of strong positive words from lexicon used in <a href="https://www.cs.cornell.edu/~cristian/Biased_language_files/neutrality.pdf">Racasens et al.2013</a></li>
+				  <li>Strong Negative - number of strong negative words from  lexicon used in <a href="https://www.cs.cornell.edu/~cristian/Biased_language_files/neutrality.pdf">Racasens et al.2013</a></li>
+				  <li>Strong Neutral - number of strong neutral words from lexicon used in <a href="https://www.cs.cornell.edu/~cristian/Biased_language_files/neutrality.pdf">Racasens et al.2013</a></li>
+				  <li>Weak Positive - number of weak positive words from lexicon used in <a href="https://www.cs.cornell.edu/~cristian/Biased_language_files/neutrality.pdf">Racasens et al.2013</a></li>
+				  <li>Weak Negative - number of weak negative words from lexicon used in <a href="https://www.cs.cornell.edu/~cristian/Biased_language_files/neutrality.pdf">Racasens et al.2013</a></li>
+				  <li>Weak Neutral - number of weak neutral words from lexicon used in <a href="https://www.cs.cornell.edu/~cristian/Biased_language_files/neutrality.pdf">Racasens et al.2013</a></li>
+				  <li>Positive Emotion - number of positive emotion words using LIWC lexicon</li>
+				  <li>Negative Emotion - number of negative emotion words using LIWC lexicon</li>
+				  <li>Sad Words - number of sad emotion words using LIWC lexicon</li>
+				  <li>Anxiety Words - number of anxiety emotion words using LIWC lexicon</li>
+				  <li>Anger Words - number of anger emotion words using LIWC lexicon</li>
+				  <li>Assent Words - number of assent emotion words using LIWC lexicon</li>
+				  <li>Affective Process Words - number of affective process words using LIWC lexicon</li>
+				</ul>
+				<h4>Bias Features:</h4>
+				<ul>
+				  <li>Bias Words - number of bias words in <a href="https://www.cs.cornell.edu/~cristian/Biased_language_files/neutrality.pdf">Racasens et al.2013</a> lexicon</li>
+				  <li>Assertives - number of assertives using <a href="https://www.cs.cornell.edu/~cristian/Biased_language_files/neutrality.pdf">Racasens el al. 2013</a> lexicon, also used in <a href="http://resources.mpi-inf.mpg.de/impact/credibilityanalysis/credibilityanalysis-cikm2015.pdf">Mukherjee and Weikum 2015</a></li>
+				  <li>Factives - number of factives using <a href="https://www.cs.cornell.edu/~cristian/Biased_language_files/neutrality.pdf">Racasens el al. 2013</a> lexicon, also used in <a href="http://resources.mpi-inf.mpg.de/impact/credibilityanalysis/credibilityanalysis-cikm2015.pdf">Mukherjee and Weikum 2015</a></li>
+				  <li>Hedges - number of hedges using <a href="https://www.cs.cornell.edu/~cristian/Biased_language_files/neutrality.pdf">Racasens el al. 2013</a> lexicon, also used in <a href="http://resources.mpi-inf.mpg.de/impact/credibilityanalysis/credibilityanalysis-cikm2015.pdf">Mukherjee and Weikum 2015</a></li>
+				  <li>Implictives - number of implictives using <a href="https://www.cs.cornell.edu/~cristian/Biased_language_files/neutrality.pdf">Racasens el al. 2013</a> lexicon, also used in <a href="http://resources.mpi-inf.mpg.de/impact/credibilityanalysis/credibilityanalysis-cikm2015.pdf">Mukherjee and Weikum 2015</a></li>
+				  <li>Probability of Subjectivity - probability of subjective text using a Niave Bayes classifer trained on 10K subjective and objective sentences from <a href="https://arxiv.org/pdf/cs/0409058">Pang and Lee 2004</a></li>
+				  <li>Probability of Objectivity - probability of objective text using a Niave Bayes classifer trained on 10K subjective and objective sentences from <a href="https://arxiv.org/pdf/cs/0409058">Pang and Lee 2004</a></li>
+				  <li>Positive Opinion - number of positive opinion words from lexicon used in <a href="http://resources.mpi-inf.mpg.de/impact/credibilityanalysis/credibilityanalysis-cikm2015.pdf">Mukherjee and Weikum 2015</a></li>
+				  <li>Negative Opinion - - number of negative opinion words from lexicon used in <a href="http://resources.mpi-inf.mpg.de/impact/credibilityanalysis/credibilityanalysis-cikm2015.pdf">Mukherjee and Weikum 2015</a></li>
+				</ul>
+				<h4>LIWC Psychology Features:</h4>
+				<ul>
+				  <li>Cognitive Process Words - number of cognitive process words (includes cause, insight, discrepancy, tentative, certian) using LIWC lexicon</li>
+				  <li>Causation Words - number of caustion (ex. because, effect) words using LIWC lexicon</li>
+				  <li>Insight Words - number of insight words (ex. think, know) using LIWC lexicon</li>
+				  <li>Inhibition Words - number of inhibition words using LIWC lexicon</li>
+				  <li>Certain Words - number of certain words (ex. always, never) using LIWC lexicon</li>
+				  <li>Tentative Words - number of tentative words (ex. maybe, perhaps) using LIWC lexicon</li>
+				  <li>Discrepancy Words - number of discrepancy words (ex. should, would) using LIWC lexicon</li>
+				  <li>Exclusive Words - number of exclusive words using LIWC lexicon</li>
+				  <li>Inclusive Words - number of inclusive words using LIWC lexicon</li>
+				  <li>Social Words - number of social words (ex. mate, talk, they) using LIWC lexicon</li>
+				  <li>Acheivement Words - number of acheivement words (ex. win, success, better) using LIWC lexicon</li>
+				</ul>
+				<h4>Engagement Features:</h4>
+				<ul>
+				  <li>Number of Facebook Shares - number of Facebook shares for each article collected using the Facebook API</li>
+				  <li>Number of Facebook Comments - number of Facebook comments for each article collected using the Facebook API</li>
+				  <li>Number of Facebook Reactions - number of Facebook reactions for each article collected using the Facebook API</li>
+				</ul>
+				
+				<h4>Moral Foundation Features:</h4>
+				All moral foundation features are based on Moral Foundations Theory (<a href="http://projectimplicit.net/nosek/papers/GHN2009.pdf">Graham et al. 2009</a>). The lexicons are using in <a href="https://arxiv.org/pdf/1709.05467.pdf">Lin et al. 2017</a>. These features include:
+				<ul>
+				  <li>Harm</li>
+				  <li>Fairness</li>
+				  <li>Cheating</li>
+				  <li>Loyalty</li>
+				  <li>Betrayal</li>
+				  <li>Authority</li>
+				  <li>Subversion</li>
+				  <li>Purity</li> 
+				  <li>Degradation</li>
+				  <li>General</li>
+				</ul>
+				
+				<h4>Part-Of-Speech Features:</h4>
+				Each POS feature is simply the normalized count of the POS in an article. This is done with a standard POS tagger. These features include:
+				<ul>
+					<li>Coordinating conjunction</li>
+					<li>Cardinal number</li>
+					<li>Determiner</li>
+					<li>Existential there</li>
+					<li>Foreign word</li>
+					<li>Preposition or subordinating conjunction</li>
+					<li>Adjective</li>
+					<li>Adjective, comparative</li>
+					<li>Adjective, superlative</li>
+					<li>List item marker</li>
+					<li>Modal</li>
+					<li>Noun, singular or mass</li>
+					<li>Noun, plural</li>
+					<li>Proper noun, singular</li>
+					<li>Proper noun, plural</li>
+					<li>Predeterminer</li>
+					<li>Possessive ending</li>
+					<li>Personal pronoun</li>
+					<li>Possessive pronoun</li>
+					<li>Adverb</li>
+					<li>Adverb, comparative</li>
+					<li>Adverb, superlative</li>
+					<li>Particle</li>
+					<li>Symbol</li>
+					<li>to</li>
+					<li>Interjection</li>
+					<li>Verb, base form</li>
+					<li>Verb, past tense</li>
+					<li>Verb, gerund or present participle</li>
+					<li>Verb, past participle</li>
+					<li>Verb, non-3rd person singular present</li>
+					<li>Verb, 3rd person singular present</li>
+					<li>Wh-determiner</li>
+					<li>Wh-pronoun</li>
+					<li>Possessive wh-pronoun</li>
+					<li>Wh-adverb</li>
+				</ul>
+				<h4>Other Topic-specific Features:</h4>
+				<ul>
+					<li>Religious Words - number of religion (ex. altar, church) words using LIWC lexicon</li>
+					<li>Money Words - number of money (ex. audit, cash, owe) words using LIWC lexicon</li>
+					<li>Space Words - number of space (ex. down, in, thin) words using LIWC lexicon</li>
+					<li>Time Words - number of time (ex. end, until, season) words using LIWC lexicon</li>
+					<li>Motion Words - number of motion (ex. arrive, car, go) words using LIWC lexicon</li>
+					<li>Relative Words - number of relative (includes space, time, motion) words using LIWC lexicon</li>
+					<li>Death Words - number of death (ex. because, effect) words using LIWC lexicon</li>
+					<li>Biological Process Words - number of biology (includes health, sexual, body) words using LIWC lexicon</li>
+					<li>Health Words - number of health (ex. clinic, flu, pill) words using LIWC lexicon</li>
+					<li>Sexual Words - number of sexual (ex. horny, love, incest) words using LIWC lexicon</li>
+					<li>Body Words - number of body (ex. cheek, hands, spit) words using LIWC lexicon</li>
+					<li>Home Words - number of home (ex. kitchen, landlord) words using LIWC lexicon</li>
+					<li>Leisure Words - number of leisure (ex. cook, chat, movie) words using LIWC lexicon</li>
+					<li>Work Words - number of work (ex. job, majors, xerox) words using LIWC lexicon</li>
+				</ul>
+			</p>
+			<br>
+		</div>
+	</div>
+</div>
+</body>
