@@ -2,22 +2,23 @@
 
 <html>
 	<head>
-	<title>NewsVisualizer</title>
+	<title>About</title>
 		<script src="js/jquery-3.2.1.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
 		<script src="js/bootstrap-select.min.js"></script>
 		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<link rel="stylesheet" href="css/index.css">
 		<link rel=icon href=static/logo/flavicon.png>
 	</head>
 </html>
 
 <body>
-
+<link rel="stylesheet" type="text/css" href="css/index.css">
 <nav class="navbar navbar-inverse navbar-fixed-top"> 
-	<a class="navbar-brand" href="#"> NewsVisualizer </a>
+	 <a href="/"><img id ="navLogo" class="navbar-brand" src="/static/logo/logo_small_trans.png"></img></a>
 	<ul class="nav navbar-nav navbar-right">
 		<li> 
-			<a href="/"> Main </a>
+			<a href="/"> Home </a>
 		</li>
 		<li>
 			<a style="padding-right:50px" href="#"> Help </a>
@@ -28,26 +29,95 @@
 <div class="row">
 	<div class="col-sm-8">
 		<div style="margin-top:100px; margin-left:50px; border-bottom: 1px solid #e6e6e6;">
-			<h1> About NewsVisualizer </h1>
+			<h1> About The NELA Toolkit </h1>
 		</div>
 		<div style="margin-left:85px; margin-top: 20px">
-			<h3><strong> What is NewsVisualizer? </strong></h3>
+			<h4><strong> What is The NELA Toolkit? </strong></h4>
 			<p style="margin-left:5px; font-size:15px"> 
-				NewsVisualizer is a news source comparison tool. Its purpose is to provide an objective, multi-dimensional viewpoint of the sources present, allowing you, as the user, to make your own judgement on the reliability of each source. NewsVisualizer makes use of a large dataset of articles, which was collected each day over a six month-long continuous time span. The main idea behind the tool's visualization is that each news source can be represented by the collection of its published articles. NewsVisualizer aims to provide a true representation of each source, doing so by displaying the minimum, maximum, average and full range of values for any of the given article features. NewsVisualizer uses a large set of article features with the intention of providing a complete viewpoint to analyze the reliability of a source.
+				The News Landscape (NELA) Toolkit is an open source toolkit for the systematic exploration of the news landscape. The goal of NELA is to both speed up human fact-checking efforts and increase the understanding of online news as a whole.  NELA is made up of multiple indepedent modules, that work at article level granularity: reliability prediction, political impartiality prediction, text objectivity prediction, and reddit community interest prediction. As well as, modules that work at source level granularity: reliability prediction, political impartiality prediction, content-based feature visualization.
 			</p>
-			<h3><strong> What are the features used? </strong></h3>
+			<br>
+			<h4><strong> How does it work? </strong></h4>
 			<p style="margin-left:5px; font-size:15px"> 
-				NewsVisualizer uses a set of article features, which are generally based on the word counts within the articles. Specifically, NewsVisualizer makes use of many of the features provided by <a href="https://liwc.wpengine.com/"> Linguistic Inquiry and Word Count (LIWC)</a>. For example, the feature 'Perception Words' is an average number of discrepancy words that the article uses; these words include "should", "would, "could", etc. The full list of features and a detailed description of each can be found <a href="#"> here </a>. 
+				Details coming soon.
 			</p>
-			<h3><strong> How can I add more sources? </strong></h3>
+			<br>
+			<h4><strong> Can I use the NELA data set for research? </strong></h4>
 			<p style="margin-left:5px; font-size:15px"> 
-				The <a href="#"> NewsVisualizer github </a> provides all the code used in creating this tool. Given your own crawler or article collection, you can compute the features for each article and add it to the tool's database.
+				Yes! It is being prepared for detailed release and publication now. More information to come soon!
 			</p>
+			<br>
+			<h4><strong> Does the NELA Toolkit have an API? </strong></h4>
+			<p style="margin-left:5px; font-size:15px"> 
+				The NELA Toolkit currently does not have an API, but it is in the works. 
+			</p>
+			<br>
+			<h4><strong> Who made The NELA Toolkit? </strong></h4>
+			<p style="margin-left:5px; font-size:15px"> 
+			The NELA Toolkit is based on information credibility research by Benjamin Horne and Sibel Adalı, and is built with the help of William Dron and Sara Khedr.
+				<br></br>
+				<b>Benjamin Horne</b> is a PhD student in Computer
+				Science at Rensselaer Polytechnic Institute. His
+				research focuses on online information quality
+				and credibility, along with the human decisions
+				in assessing online information. This work utilizes
+				techniques in machine learning, natural language
+				processing, and social network analysis
+				to both characterize and detect the veracity information, in hopes
+				of not only building better tools for decision making, but in understanding
+				how the human impacts those decisions. To learn more about his work, <a href="http://homepages.rpi.edu/~horneb/">check out his website</a>.
+				<br></br>
+				<b>William Dron</b> is a Senior Scientist at
+				Raytheon BBN Technologies, where he has
+				worked since 2004. William has a background
+				in communications networks and computer science,
+				particularly for military use. Over the past
+				8 years, he has focused on cross network genre
+				experimentation and has incorporated social and
+				information sciences in his work. He is particularly interested in
+				utilizing software engineering principles and visualizations to create
+				cohesive and scalable software solutions.
+				<br></br>
+				<b>Sara Khedr</b> is a Master’s student in the Computer
+				Science department at Rensselaer Polytechnic
+				Institute (RPI). She received her Bachelor’s
+				degree in Computer and System Engineering
+				from RPI. During her education, Sara has focused
+				on attaining general software development experience
+				and has previously interned for Workday
+				and Salesforce, two SaaS companies.
+				<br></br>
+				<b>Dr. Sibel Adalı</b> is a Professor and Associate
+				Head of Computer Science at Renssealer Polytechnic
+				Institute. Her research concentrates on
+				cross-cutting problems related to trust, information
+				processing, and social networks. As part
+				of her work, she has worked as the ARL-lead
+				Network Science Collaborative Technology Alliance
+				(NS-CTA) wide Trust Coordinator, Social and Cognitive Networks
+				Academic Research Center (SCNARC) Associate Director.
+				She serves as associate editor for ACM Transactions on Internet
+				Technology. She is the author of a book on Modeling Trust Context
+				in Networks, released in 2013 by Springer. For more on her work, <a href="http://www.cs.rpi.edu/~sibel/SibelAdali/Sibel_Adali.html">check out her website</a>.
+				<br></br>
+				Research was sponsored by the Army Research Laboratory and was
+				accomplished under Cooperative Agreement Number W911NF-09-2-0053 (the
+				ARL Network Science CTA). The views and conclusions contained in this
+				document are those of the authors and should not be interpreted as
+				representing the official policies, either expressed or implied, of
+				the Army Research Laboratory or the U.S. Government. The
+				U.S. Government is authorized to reproduce and distribute reprints for
+				Government purposes notwithstanding any copyright notation here on.
+				
+			</p>
+			
 			<h3><strong> Where can I see related work? </strong></h3>
 			<p style="margin-left:5px; font-size:15px"> 
-				The NewsVisualizer is a subset of the "fake news" work done at RPI's research team led by Sibel Adali. Below are a few related papers from our team on this subject:
+				Here are several papers on the research behind NELA:
 				<br></br>
-				<a href="http://homepages.rpi.edu/~horneb/Horne_fakenews_NECO2017.pdf"> This Just In: Fake News Packs a Lot in Title, Uses Simpler, Repetitive Content in Text Body, More Similar to Satire than Real News </a>
+				<a href="http://homepages.rpi.edu/~horneb/Horne_fakenews_NECO2017.pdf">Horne, Benjamin D., and Sibel Adali. "This Just In: Fake News Packs a Lot in Title, Uses Simpler, Repetitive Content in Text Body, More Similar to Satire than Real News." NECO at ICWSM 2017 </a>
+				<br></br>
+				<a href="https://arxiv.org/pdf/1705.02673.pdf">Horne, Benjamin D., Sibel Adali, and Sujoy Sikdar. "Identifying the social signals that drive online discussions: A case study of Reddit communities." ICCCN 2017</a>
 			</p>
 		</div>
 	</div>
