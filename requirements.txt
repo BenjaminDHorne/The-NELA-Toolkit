@@ -22,3 +22,5 @@ collections
 logging
 glob
 shutil
+flask-wtf
+Flask-Mail
