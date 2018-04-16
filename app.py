@@ -12,7 +12,8 @@ import logging
 import uuid
 import glob
 import shutil
-from credibility_toolkit import parse_url, parse_text
+from credibility_toolkit import parse_url, parse_text, get_info, parse_info
+import argparse
 
 app = Flask(__name__)
 monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
@@ -112,6 +113,53 @@ def send_error(text):
     </script></body></html>
     """ % (text, url_for('credibility'))
 
+@app.route("/scrapeArticle", methods=['GET', 'POST'])
+def scrapeArticle():
+  """
+  when the user wants to retrieve a single article, this function will get called. 
+  This just scrapes url, and put the results in a json string return value. A json file is not updated.
+  """
+  #print(request.form)
+
+  if 'url' not in request.form :
+      return 'ERROR: No URL in POST'
+
+  url = request.form['url']
+
+  info = {}
+  #try:
+  #    get_info(url, info)
+  #except Exception as inst:
+  #    return send_error(inst)
+  info = get_info(url)
+  #return json.dumps(output,indent=2)
+  #print(json.dumps(info))
+  return json.dumps(info)
+
+@app.route("/rateArticle", methods=['GET', 'POST'])
+def rateArticle():
+  """
+  when the user wants data for a single article, this function will get called. 
+  We will then run the credibility toolkit on the url, and put the results in 
+  a json string return value. A json file is not updated.
+  """
+  #print(request.form)
+
+  if 'info' not in request.form :
+      return 'ERROR: No Info in POST'
+
+  info = json.loads(request.form['info'])
+  #print("input json:\n{}".format(info))
+
+  output = {'urls': []}
+  try:
+      parse_info(output, info)
+  except Exception as inst:
+      return send_error(inst)
+
+  #return json.dumps(output,indent=2)
+  return json.dumps(output)
+
 @app.route("/article", methods=['GET', 'POST'])
 def article():
   """
@@ -120,7 +168,7 @@ def article():
   append the results to the json file.
   """
   if 'tmpfile' not in session or not os.path.isfile(session['tmpfile']):
-      return 'ERROR: Unable to find JSON file'
+      return 'ERROR: Unable to find JSON file\n'
 
   if 'url' not in request.form :
       return 'ERROR: No URL in POST'
@@ -580,15 +628,20 @@ def send_css(path):
   return send_from_directory('static/css', path)
 
 if __name__ == "__main__":
-	credsFile = "../dbCredentials.json"
+	parser = argparse.ArgumentParser()
+	parser.add_argument('--host', default='0.0.0.0', help='host')
+	parser.add_argument('--port', type=int, default=80, help='port')
+	args = parser.parse_args()
+
 	jsonCreds = ""
+	credsFile = "../dbCredentials.json"
 	try:
 		jsonCreds = open(credsFile)
 	except:
 		sys.stderr.write("Error: Invalid database credentials file\n")
 		sys.exit(1)
-
-	creds = json.load(jsonCreds)
+        
+        creds = json.load(jsonCreds)
 
 	badCollectionData = open("badCollection.json")
 	badCollectionData = json.load(badCollectionData)
@@ -615,4 +668,4 @@ if __name__ == "__main__":
 
 	app.secret_key = str('2e239029-814f-4ece-b99c-1f539509ca10')
  
-	app.run(host='0.0.0.0', port=80, threaded=True)
+	app.run(host=args.host, port=args.port, threaded=True)
