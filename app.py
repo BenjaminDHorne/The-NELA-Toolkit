@@ -144,6 +144,22 @@ def article():
 
   return redirect(url_for('credibility'), code=302)
 
+@app.route("/clear")
+def clear():
+  if 'tmpfile' in session:
+    tmp = session.pop('tmpfile')
+    try:
+      os.remove(tmp)
+    except:
+      pass
+
+  session['tmpfile'] = os.path.join("static", "tmp-" + str(uuid.uuid4()))
+  with open(session['tmpfile'], 'w') as outfile:
+      output = {'urls':[]}
+      json.dump(output, outfile, indent=2)
+
+  return redirect(url_for('credibility'), code=302)
+
 @app.route("/reset")
 def reset():
   if 'tmpfile' in session:
