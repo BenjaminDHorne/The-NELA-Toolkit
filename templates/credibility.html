@@ -115,6 +115,15 @@ function reset_all_data() {
   }
 }
 </script>
+<input type="button" onclick="clear_all_data()" value="Clear All Entries"></input>
+<script>
+function clear_all_data() {
+  var answer = confirm("Clear all data?");
+  if (answer) {
+     window.location.href='/clear'
+  }
+}
+</script>
 <div style="float:right; width:375px; margin-top: -25px"> <p style="font-size:8"><strong> Tip </strong>:If your new article does not show up in the table, press CTRL+SHIFT+R to refresh browser cache</p> </div>
 
 </div>
