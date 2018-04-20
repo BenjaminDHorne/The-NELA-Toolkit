@@ -86,6 +86,10 @@ def main():
 @app.route("/about")
 def aboutPage():
 	return render_template('about.html')
+	
+@app.route("/datasetRequest")
+def dataPage():
+	return render_template('datasetRequest.html')
 
 @app.route("/help")
 def help():
