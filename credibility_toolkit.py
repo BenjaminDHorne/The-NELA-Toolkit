@@ -118,23 +118,6 @@ def add_classifier(info, name, func, *args):
 
   lock.release()
 
-def get_info(url):
-  info = OrderedDict()
-  info["url"] = url
-
-  if url:
-    try:
-      info["title"], info["text"], info["source"] = scrape.scrape(url)
-    except:
-      print "WARNING: Unable to scrape:", url
-      return {}
-
-  else:
-    info["text"] = "FAKE FAKE FAKE Clinton is terrible Mainstream media sucks. The real patriots can see this FRAUD!"
-    info["title"] = "BREAKING Fraudulent Clinton Votes Discovered By The Tens Of Thousands, wait until you see this! Those dems are at it again."
-    info["source"] = "unknown"
-  return info
-
 def parse_url(output, url):
   info = OrderedDict()
   info["url"] = url
