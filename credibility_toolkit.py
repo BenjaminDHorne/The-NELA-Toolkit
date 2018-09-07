@@ -118,7 +118,7 @@ def add_classifier(info, name, func, *args):
 
   lock.release()
 
-def parse_url(output, url):
+def parse_url(output, url, run_fake=True, run_bias=True, run_community=True, run_subjectivity=True):
   info = OrderedDict()
   info["url"] = url
 
@@ -145,7 +145,7 @@ def parse_url(output, url):
   #except:
   #  pass
 
-  parse_info(output, info)
+  parse_info(output, info, run_fake, run_bias, run_community, run_subjectivity)
 
 def parse_text(output, title, text):
   info = OrderedDict()
@@ -157,7 +157,7 @@ def parse_text(output, title, text):
 
   parse_info(output, info)
 
-def parse_info(output, info):
+def parse_info(output, info, run_fake=True, run_bias=True, run_community=True, run_subjectivity=True):
   info["title"] = info["title"].strip()
   info["text"] = info["text"].strip()
   info["source"] = info["source"].strip()
@@ -185,10 +185,14 @@ def parse_info(output, info):
 
   if True: # Set to true for threading, false otherwise
     threads = []
-    threads.append(Thread(target=add_classifier, args=(info, "fake_filter", fake_filter.fake_fitler, featurepath,)))
-    threads.append(Thread(target=add_classifier, args=(info, "bias_filter", bias_filter.bias_fitler, featurepath,)))
-    threads.append(Thread(target=add_classifier, args=(info, "community_filter", community_filter.community_fitler, featurepath,)))
-    threads.append(Thread(target=add_classifier, args=(info, "subjectivity_classifier", subjectivity_classifier.subjectivity, info["title"], info["text"],)))
+    if run_fake:
+        threads.append(Thread(target=add_classifier, args=(info, "fake_filter", fake_filter.fake_fitler, featurepath,)))
+    if run_bias:
+        threads.append(Thread(target=add_classifier, args=(info, "bias_filter", bias_filter.bias_fitler, featurepath,)))
+    if run_community:
+        threads.append(Thread(target=add_classifier, args=(info, "community_filter", community_filter.community_fitler, featurepath,)))
+    if run_subjectivity:
+        threads.append(Thread(target=add_classifier, args=(info, "subjectivity_classifier", subjectivity_classifier.subjectivity, info["title"], info["text"],)))
 
     for t in threads:
       t.daemon = True

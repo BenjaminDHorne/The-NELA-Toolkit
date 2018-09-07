@@ -20,7 +20,7 @@ badCollectionData = {}
 
 
 ##### main stuf that needs to be outside the main when served by gunicorn and nginx. main is not ran unless called with python
-credsFile = "../dbCredentials.json"
+credsFile = "dbSetup/dbCredentials.json"
 jsonCreds = ""
 try:
 	jsonCreds = open(credsFile)
@@ -600,7 +600,7 @@ def send_css(path):
   return send_from_directory('static/css', path)
 
 if __name__ == "__main__":
-	credsFile = "../dbCredentials.json"
+	credsFile = "dbSetup/dbCredentials.json"
 	jsonCreds = ""
 	try:
 		jsonCreds = open(credsFile)

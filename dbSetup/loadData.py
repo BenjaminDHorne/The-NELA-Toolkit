@@ -70,7 +70,7 @@ def loadSourceMetadata(sourceMetadata, db):
 	db.commit()
 
 if __name__ == "__main__":
-	credsFile = "../../dbCredentials.json"
+	credsFile = "dbCredentials.json"
 
 	# Check that credentials and article data files exist
 	jsonCreds = ""

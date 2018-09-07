@@ -40,15 +40,7 @@ details can also be found on the “View All Sources" page.
 
 ### PostgreSQL
 
-To support the tool's back-end, [PostgreSQL](https://www.postgresql.org/) must be downloaded. In PostgreSQL, create a database with any name (e.g. NELA). You will need to create a database credentials JSON file named **dbCredentials.json** outside of the cloned directory. The format for the JSON file is shown below:
-
-    {
-    	"host":"",
-    	"user":"",
-    	"passwd":"",
-    	"db":"",
-    	"port":""
-    }
+To support the tool's back-end, [PostgreSQL](https://www.postgresql.org/) must be downloaded. In PostgreSQL, create a database with any name (e.g. NELA). A default dbCreditials file is provided under dbSetup/dbCredentials.json. The expected username and password for PostgreSQL is "postgres".
 
 ### Python Dependencies
 
@@ -56,13 +48,29 @@ To run the tool, [Python 2.7](https://www.python.org/downloads/) must be downloa
 
 The easiest way to download all necessary Python packages is using [pip](https://pypi.python.org/pypi/pip). To do so, navigate to the project root directory and run:
 
-	pip install -r requirements.txt
+	bash ./setup/install-packages.sh
 
 ## Loading Data
 
 To load the data into the newly created PostgreSQL database, navigate to the /dbSetup directory in the project directory. Extract the contents of the data.zip folder in the /dbSetup directory. Then, run:
 
-	python load.py
+    unzip data.zip
+    sudo -u postgres createdb NELA
+    sudo -u postgres psql -c "CREATE USER nela WITH PASSWORD 'nela';"
+	python loadData.py
+
+## Extract the classifiers
+
+    cd classifiers
+    unzip resources.zip
+
+## Note on VaderSentiment
+
+If you are running python 2.7, you need to add the following import to the top of vaderSentiment.py (typically in /usr/local/lib/python2.7/dist-packages/vaderSentiment/vaderSentiment.py)
+
+    from io import open
+
+This is a workaround for the "TypeError: 'encoding' is an invalid keyword argument for this function" error.
 
 ## Running The Tool
 

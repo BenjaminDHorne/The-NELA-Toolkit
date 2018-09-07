@@ -10,12 +10,12 @@ which sudo &> /dev/null && do_sudo="sudo"
 python -mplatform | grep -q Ubuntu
 if [ $? -eq 0 ]; then
   $do_sudo apt-get remove python-numpy python-scipy
-  $do_sudo apt-get install libblas-dev liblapack-dev gfortran python-pil python-qt4
+  $do_sudo apt-get install libblas-dev liblapack-dev gfortran python-pil python-qt4 postgresql
 fi
 
-$do_sudo pip install flask nltk textblob goose-extractor tldextract || exit 1
-$do_sudo pip install numpy scipy || exit 1
-$do_sudo pip install itsdangerous click idna requests_file feedparser bs4 werkzeug jinja2 vaderSentiment sklearn || exit 1
+$do_sudo pip install -U flask flask_sqlalchemy nltk textblob goose-extractor tldextract || exit 1
+$do_sudo pip install numpy scipy psycopg2 psycopg2-binary || exit 1
+$do_sudo pip install -U itsdangerous click idna requests_file feedparser bs4 werkzeug jinja2 vaderSentiment sklearn || exit 1
 
 python -c 'import nltk ; nltk.download("subjectivity")'
 python -c 'import nltk ; nltk.download("punkt")'

@@ -1,1 +1,1 @@
-Hannity:/NN Brooks/NNS Would/MD Have/VB Won/NNP By/NNP 20,/CD But/CC McConnell/NNP Didn't/RB Want/NNP Him/NNP to/TO Be/VB a/DT Senator/NNP and/CC Smeared/NNP Him/NNP 
+Open/JJ Letter/NNP to/TO the/DT People/NNP of/IN the/DT United/NNP States/NNPS From/NNP Puerto/NNP Rico,/NNP a/DT Month/NNP After/IN Hurricane/NNP Maria/NNP 
