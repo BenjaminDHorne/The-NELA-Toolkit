@@ -161,6 +161,8 @@ def clear():
       pass
 
   session['tmpfile'] = os.path.join("static", "tmp-" + str(uuid.uuid4()))
+  if platform.system() == "Windows":
+      session['tmpfile'] = session['tmpfile'].replace("\\", "/")
   with open(session['tmpfile'], 'w') as outfile:
       output = {'urls':[]}
       json.dump(output, outfile, indent=2)
