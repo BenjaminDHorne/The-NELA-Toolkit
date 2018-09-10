@@ -44,11 +44,9 @@ Here is a great guide to running flask locally: http://flask.pocoo.org/docs/0.12
 
 For NELA running the app should look something like this:
 
-export FLASK_APP=app.py
-
-flask run
-
-* Running on http://127.0.0.1:5000/
+	export FLASK_APP=app.py
+	flask run
+	Running on http://127.0.0.1:5000/
 
 ### PostgreSQL
 
