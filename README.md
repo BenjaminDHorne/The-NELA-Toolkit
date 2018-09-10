@@ -48,6 +48,12 @@ For NELA running the app should look something like this:
 	flask run
 	Running on http://127.0.0.1:5000/
 
+If you are running locally on windows, use set instead of export:
+	
+	set FLASK_APP=app.py
+	python -m flask run
+	Running on http://127.0.0.1:5000/
+
 ### PostgreSQL
 
 To support the tool's back-end, [PostgreSQL](https://www.postgresql.org/) must be downloaded. In PostgreSQL, create a database with any name (e.g. NELA). You will need to create a database credentials JSON file named **dbCredentials.json** outside of the cloned directory. The format for the JSON file is shown below:
