@@ -13,6 +13,7 @@ import uuid
 import glob
 import shutil
 from credibility_toolkit import parse_url, parse_text
+import platform
 
 app = Flask(__name__)
 monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
@@ -74,6 +75,8 @@ def home():
 def credibility():
   if 'tmpfile' not in session or not os.path.isfile(session['tmpfile']):
       session['tmpfile'] = os.path.join("static", "tmp-" + str(uuid.uuid4()))
+      if platform.system() == "Windows":
+	session['tmpfile'] = session['tmpfile'].replace("\\", "/")
       shutil.copy2(os.path.join("static", "output.json"), session['tmpfile'])
 
   return render_template('credibility.html', json=session['tmpfile'])
