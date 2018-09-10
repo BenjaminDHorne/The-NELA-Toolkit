@@ -56,7 +56,7 @@ If you are running locally on Windows rather than Linux, use set instead of expo
 
 ### PostgreSQL
 
-To support the tool's back-end, [PostgreSQL](https://www.postgresql.org/) must be downloaded. In PostgreSQL, create a database with any name (e.g. NELA). You will need to create a database credentials JSON file named **dbCredentials.json** outside of the cloned directory. The format for the JSON file is shown below:
+To support the tool's back-end, [PostgreSQL](https://www.postgresql.org/) must be downloaded. In PostgreSQL, create a database with any name (e.g. NELA). You will need to create a database credentials JSON file named **dbCredentials.json** outside of the cloned directory (eg. ../dbCredentials.json). The format for the JSON file is shown below:
 
     {
     	"host":"",
