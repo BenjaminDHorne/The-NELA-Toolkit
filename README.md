@@ -38,22 +38,6 @@ details can also be found on the “View All Sources" page.
 
 ## Using the toolkit locally
 
-## Flask
-
-Here is a great guide to running flask locally: http://flask.pocoo.org/docs/0.12/quickstart/.
-
-For NELA, running the app should look something like this:
-
-	export FLASK_APP=app.py
-	flask run
-	Running on http://127.0.0.1:5000/
-
-If you are running locally on Windows rather than Linux, use set instead of export:
-	
-	set FLASK_APP=app.py
-	python -m flask run
-	Running on http://127.0.0.1:5000/
-
 ### PostgreSQL
 
 To support the tool's back-end, [PostgreSQL](https://www.postgresql.org/) must be downloaded. In PostgreSQL, create a database with any name (e.g. NELA). You will need to create a database credentials JSON file named **dbCredentials.json** outside of the cloned directory (eg. ../dbCredentials.json). The format for the JSON file is shown below:
@@ -80,11 +64,21 @@ To load the data into the newly created PostgreSQL database, navigate to the /db
 
 	python load.py
 
-## Running The Tool
+## Running The Tool with Flask
 
-Within the root project directory, run:
+Here is a great guide to running flask locally: http://flask.pocoo.org/docs/0.12/quickstart/.
+
+For NELA, running the app should look something like this:
+
+	export FLASK_APP=app.py
+	flask run
+	Running on http://127.0.0.1:5000/
+
+If you are running locally on Windows rather than Linux, use set instead of export:
 	
-	python app.py
+	set FLASK_APP=app.py
+	python -m flask run
+	Running on http://127.0.0.1:5000/
 	
 	
 ## For Windows Users
