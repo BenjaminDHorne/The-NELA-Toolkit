@@ -85,6 +85,11 @@ To load the data into the newly created PostgreSQL database, navigate to the /db
 Within the root project directory, run:
 	
 	python app.py
+	
+	
+## For Windows Users
+
+If you are setting up the system on Windows, you will likely run into an issue with the pickled files (all files that end in .sav). Please check out inscructions in /pickle_converter to fix this.
 
 ## Project Data Details
 
