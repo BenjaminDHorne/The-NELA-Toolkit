@@ -142,7 +142,7 @@ A portion of this data is shown below:
 	}
 
 
- 
+###
 
 Copyright (c) 2017, Benjamin D. Horne and Sibel Adali
 All rights reserved.
