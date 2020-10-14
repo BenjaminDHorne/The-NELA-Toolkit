@@ -1,5 +1,11 @@
 # The News Landscape (NELA) Toolkit
 
+**NOTE**: This code is for research purposes only! 
+
+**NOTE**: The prediction models in this repository are outdated. Please do not make conclusions from the output of models. 
+
+**NOTE**: This repository requires the LIWC 2007 Dictionary. To access the dictionary, please contact Dr. James Pennebaker: pennebaker@utexas.edu. The dictionary can be placed in the resources folder once aquired.
+
 The News Landscape (NELA) Toolkit is built using Flask, Javascript, and PostgreSQL.
 
 The project is currently being served using NGNIX and Gunicorn at **nelatoolkit.science**. 
